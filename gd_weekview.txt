@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calendar - Week View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#7a5644",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#f0eee9",
+                        "tertiary-container": "#c29782",
+                        "surface": "#fbf9f4",
+                        "on-surface-variant": "#424842",
+                        "outline-variant": "#c2c8c0",
+                        "secondary": "#7d562d",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#233d29",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#4e3020",
+                        "surface-tint": "#4a654e",
+                        "outline": "#737972",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2c1600",
+                        "inverse-on-surface": "#f2f1ec",
+                        "secondary-container": "#ffca98",
+                        "on-surface": "#1b1c19",
+                        "surface-dim": "#dbdad5",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface-variant": "#e4e2dd",
+                        "surface-container-low": "#f5f3ee",
+                        "primary-fixed-dim": "#b0ceb2",
+                        "on-secondary-container": "#7a532a",
+                        "background": "#fbf9f4",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "tertiary-fixed": "#ffdbcb",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b0ceb2",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-tertiary-fixed-variant": "#603f2f",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fbf9f4",
+                        "on-primary-fixed": "#07200f",
+                        "surface-container-highest": "#e4e2dd",
+                        "primary": "#4a654e",
+                        "inverse-surface": "#30312e",
+                        "primary-fixed": "#cceace",
+                        "surface-container-high": "#eae8e3",
+                        "on-primary-fixed-variant": "#334d38",
+                        "on-tertiary-fixed": "#2e1507",
+                        "primary-container": "#8ba88e",
+                        "on-background": "#1b1c19",
+                        "tertiary-fixed-dim": "#ebbda6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "gutter": "12px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "container-margin": "20px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Newsreader"],
+                        "headline-md": ["Newsreader"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        /* Hide scrollbar for clean look but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .grid-lines {
+            background-image: linear-gradient(theme('colors.outline-variant') 1px, transparent 1px);
+            background-size: 100% 4px;
+            opacity: 0.2;
+        }
+        
+        .writing-vertical {
+            writing-mode: vertical-rl;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col no-scrollbar">
+<!-- TopAppBar (Web & Mobile) -->
+<header class="bg-surface dark:bg-surface-dim docked full-width top-0 z-40 border-b border-outline-variant/30 flex justify-between items-center px-gutter w-full h-16 sticky">
+<div class="flex items-center gap-md">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">October</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Week 42 · 16th - 22nd</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col overflow-hidden pb-24 md:pb-0">
+<!-- Desktop Drawer Layout Wrapper -->
+<div class="flex flex-grow h-full overflow-hidden">
+<!-- Navigation Drawer (Web only - hidden md:flex) -->
+<aside class="hidden md:flex flex-col h-full w-80 rounded-r-xl bg-surface-container-low dark:bg-surface-container-high border-r border-outline-variant/30 shadow-lg dark:shadow-none p-md z-30">
+<div class="mb-lg flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<!-- Placeholder for Avatar -->
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A gentle, soft-focus portrait of a young woman with a warm, encouraging smile. She is in a naturally lit, minimalist studio setting with soft beige tones. The overall aesthetic is calm, analog-first, and mindful, fitting perfectly within a tactile minimalist design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtG3T9Bgom_aPBgiLqPFed-w60g33-4_PQDHuaE415gA3Y1aL1fcqOyOcDBjbFbt5vAAyUnd5Gy3sO_M31aDKcW94LvBoe6--PHdVp7izx3ow1Dc4iw3JjaBnlS8Q5Zp1BgyAXxkxwwUGR0cjO7XhtVd_yYCnnQk3uzLt37vgQux0Ir0sSr41FiAULX_k9jqE3pjDgcOoQpi-BFsSLHHDvntY0JTn_c-HOuXwISSaPJ6Bfpq8lFjBXGgWbuwAjycsWuaDvfzj3HWlV"/>
+</div>
+<div>
+<h2 class="font-title-lg text-title-lg text-primary">Your Journal</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Mindful Productivity</p>
+</div>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<a class="flex items-center gap-md px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 0;">event_note</span>
+<span class="font-title-lg text-title-lg text-base">Daily Log</span>
+</a>
+<a class="flex items-center gap-md px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg scale-95 duration-150 transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_view_month</span>
+<span class="font-title-lg text-title-lg text-base font-bold">Monthly View</span>
+</a>
+<a class="flex items-center gap-md px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 0;">schedule_send</span>
+<span class="font-title-lg text-title-lg text-base">Future Log</span>
+</a>
+<a class="flex items-center gap-md px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+<span class="font-title-lg text-title-lg text-base">Collections</span>
+</a>
+</nav>
+</aside>
+<!-- Calendar Grid Area -->
+<div class="flex-grow flex flex-col overflow-x-auto overflow-y-auto relative bg-surface">
+<!-- Weekday Headers (Sticky Top) -->
+<div class="flex min-w-[800px] border-b border-outline-variant/20 sticky top-0 bg-surface/95 backdrop-blur-sm z-20">
+<!-- Row Label Spacer -->
+<div class="w-10 flex-shrink-0 border-r border-outline-variant/10"></div>
+<div class="grid grid-cols-7 flex-grow">
+<!-- Day 1 -->
+<div class="p-2 text-center border-r border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant">MON</p>
+<p class="font-display-lg text-display-lg text-primary">16</p>
+</div>
+<!-- Day 2 -->
+<div class="p-2 text-center border-r border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant">TUE</p>
+<p class="font-display-lg text-display-lg text-primary">17</p>
+</div>
+<!-- Day 3 -->
+<div class="p-2 text-center border-r border-outline-variant/10 bg-surface-container-low shadow-[inset_0_-2px_0_0_theme('colors.primary')]">
+<p class="font-label-sm text-label-sm text-primary font-bold">WED</p>
+<p class="font-display-lg text-display-lg text-primary font-bold">18</p>
+</div>
+<!-- Day 4 -->
+<div class="p-2 text-center border-r border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant">THU</p>
+<p class="font-display-lg text-display-lg text-primary">19</p>
+</div>
+<!-- Day 5 -->
+<div class="p-2 text-center border-r border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant">FRI</p>
+<p class="font-display-lg text-display-lg text-primary">20</p>
+</div>
+<!-- Day 6 -->
+<div class="p-2 text-center border-r border-outline-variant/10 bg-surface-container-low/50">
+<p class="font-label-sm text-label-sm text-on-surface-variant">SAT</p>
+<p class="font-display-lg text-display-lg text-secondary">21</p>
+</div>
+<!-- Day 7 -->
+<div class="p-2 text-center bg-surface-container-low/50">
+<p class="font-label-sm text-label-sm text-on-surface-variant">SUN</p>
+<p class="font-display-lg text-display-lg text-secondary">22</p>
+</div>
+</div>
+</div>
+<!-- Swimlanes Container -->
+<div class="flex flex-col min-w-[800px] flex-grow relative">
+<!-- Subtle background grid lines -->
+<div class="absolute inset-0 grid-lines pointer-events-none z-0"></div>
+<!-- Swimlane: Anytime -->
+<div class="flex border-b border-outline-variant/20 min-h-[120px] z-10 group">
+<div class="w-10 flex-shrink-0 flex flex-col items-center justify-center border-r border-outline-variant/10 bg-surface-container-low/50">
+<span class="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest writing-vertical rotate-180">Anytime</span>
+</div>
+<div class="grid grid-cols-7 flex-grow">
+<!-- Mon -->
+<div class="border-r border-outline-variant/10 p-1 flex flex-col gap-1"></div>
+<!-- Tue --> <div class="border-r border-outline-variant/10 p-1"></div>
+<!-- Wed (Current) --> <div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/30"></div>
+<!-- Thu --> <div class="border-r border-outline-variant/10 p-1">
+<div class="bg-surface-container border border-outline-variant/50 text-on-surface rounded p-2 text-xs flex items-start gap-1 opacity-70">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="leading-tight font-medium">Call Mom</span>
+</div>
+</div>
+<!-- Fri --> <div class="border-r border-outline-variant/10 p-1"></div>
+<!-- Sat --> <div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/20"></div>
+<!-- Sun --> <div class="p-1 bg-surface-container-low/20"></div>
+</div>
+</div>
+<!-- Swimlane: Morning -->
+<div class="flex border-b border-outline-variant/20 min-h-[160px] z-10 group">
+<div class="w-10 flex-shrink-0 flex flex-col items-center justify-center border-r border-outline-variant/10 bg-surface-container-low/50">
+<span class="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest writing-vertical rotate-180">Morning</span>
+</div>
+<div class="grid grid-cols-7 flex-grow">
+<div class="border-r border-outline-variant/10 p-1">
+<!-- Block -->
+<div class="bg-tertiary-fixed text-on-tertiary-fixed-variant rounded p-2 shadow-sm border border-tertiary-fixed-dim/30 flex items-start gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px] mt-[2px] text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-xs leading-tight font-medium">Review goals</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1">
+<!-- Block -->
+<div class="bg-surface-variant text-on-surface-variant rounded p-2 shadow-sm border border-outline-variant/30 mb-2 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium">Team Sync</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/30 relative">
+</div>
+<div class="border-r border-outline-variant/10 p-1">
+<div class="bg-secondary-container text-on-secondary-container rounded p-2 shadow-sm border border-secondary/20 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium">Design Review</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/20"></div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/20">
+</div>
+<div class="p-1 bg-surface-container-low/20">
+<div class="bg-error-container text-on-error-container rounded p-2 shadow-sm border border-error/20 mt-4 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px] text-error" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium">Thi JLPT N5</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Swimlane: Afternoon -->
+<div class="flex border-b border-outline-variant/20 min-h-[160px] z-10 group">
+<div class="w-10 flex-shrink-0 flex flex-col items-center justify-center border-r border-outline-variant/10 bg-surface-container-low/50">
+<span class="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest writing-vertical rotate-180">Afternoon</span>
+</div>
+<div class="grid grid-cols-7 flex-grow">
+<div class="border-r border-outline-variant/10 p-1">
+</div>
+<div class="border-r border-outline-variant/10 p-1"></div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/30">
+</div>
+<div class="border-r border-outline-variant/10 p-1">
+<div class="bg-primary-container text-on-primary-container rounded p-2 shadow-sm border border-primary/20 mt-2 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium">Deep Work: Coding</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1">
+<div class="bg-surface-variant text-on-surface-variant rounded p-2 shadow-sm border border-outline-variant/30 mt-8 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium flex items-center gap-1"><span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">warning</span> Dentist Appt</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/20"></div>
+<div class="p-1 bg-surface-container-low/20"></div>
+</div>
+</div>
+<!-- Swimlane: Evening -->
+<div class="flex min-h-[160px] z-10 group">
+<div class="w-10 flex-shrink-0 flex flex-col items-center justify-center border-r border-outline-variant/10 bg-surface-container-low/50">
+<span class="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest writing-vertical rotate-180">Evening</span>
+</div>
+<div class="grid grid-cols-7 flex-grow">
+<div class="border-r border-outline-variant/10 p-1"></div>
+<div class="border-r border-outline-variant/10 p-1"></div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/30">
+<div class="bg-surface-container border border-outline-variant/50 text-on-surface rounded p-2 text-xs flex items-start gap-1 mt-2">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="leading-tight font-medium">Read 20 pages</span>
+</div>
+</div>
+<div class="border-r border-outline-variant/10 p-1"></div>
+<div class="border-r border-outline-variant/10 p-1"></div>
+<div class="border-r border-outline-variant/10 p-1 bg-surface-container-low/20">
+<div class="bg-primary-fixed text-on-primary-fixed-variant rounded p-2 shadow-sm border border-primary-fixed-dim/30 mt-4 flex items-start gap-1">
+<span class="material-symbols-outlined text-[14px] mt-[2px]" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<span class="text-xs leading-tight font-medium">Football Match</span>
+</div>
+</div>
+<div class="p-1 bg-surface-container-low/20"></div>
+</div>
+</div>
+</div>
+<!-- End Swimlanes Container -->
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Mobile & Desktop, positioned above bottom nav on mobile) -->
+<div class="fixed right-container-margin bottom-24 md:bottom-container-margin z-50">
+<button class="bg-tertiary hover:bg-tertiary-container text-on-tertiary hover:text-on-tertiary-container w-14 h-14 rounded-2xl shadow-[0_4px_14px_0_rgba(122,86,68,0.39)] flex items-center justify-center transition-all duration-200 hover:-translate-y-1">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">add</span>
+</button>
+</div>
+<!-- BottomNavBar (Mobile Only - md:hidden) -->
+<nav class="md:hidden bg-surface-container dark:bg-surface-container-highest docked full-width bottom-0 rounded-t-xl border-t border-outline-variant/20 shadow-md-soft dark:shadow-none fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">edit_note</span>
+<span class="font-label-sm text-label-sm">Note</span>
+</a>
+<!-- Active Tab -->
+<a class="flex flex-col items-center justify-center bg-tertiary-container dark:bg-tertiary text-on-tertiary-container dark:text-on-tertiary rounded-full px-5 py-1 scale-90 duration-200 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-label-sm text-label-sm font-bold">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">book_5</span>
+<span class="font-label-sm text-label-sm">Journal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+</body></html>

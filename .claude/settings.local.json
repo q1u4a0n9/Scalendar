@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"D:\\\\Androi_project\\\\doanchuan2026\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(ConvertTo-Csv -NoTypeInformation)",
+      "Bash(Out-String)",
+      "Bash(dir /S /B \"D:\\\\Androi_project\\\\doanchuan2026\\\\app\\\\src\\\\main\\\\java\\\\com\\\\scalendar\")",
+      "Bash(findstr /V \"\\\\.class\")",
+      "Bash(gradlew assembleDebug)",
+      "Bash(./gradlew assembleDebug)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

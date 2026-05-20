@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notes App Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Newsreader"', 'serif'],
+          },
+          colors: {
+            appBg: '#F9F8F5',
+            titleColor: '#4A5D4E',
+            cardBg: '#F4F3EE',
+            fabBg: '#7A5B48',
+            navBg: '#F2F1ED',
+            navActive: '#D3A997',
+            borderColor: '#DCDAD4',
+            textBody: '#4B5563',
+            textMuted: '#6B7280'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 flex justify-center min-h-screen">
+<!-- Main Mobile Container -->
+<div class="w-full max-w-[400px] bg-appBg relative flex flex-col h-screen overflow-hidden font-sans shadow-xl">
+<!-- BEGIN: HeaderSection -->
+<header class="flex items-center justify-between px-5 pt-12 pb-4 shrink-0">
+<button aria-label="Menu" class="text-gray-700">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<h1 class="font-serif text-3xl font-bold text-titleColor tracking-tight">Today</h1>
+<button aria-label="Calendar view" class="text-gray-700">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</header>
+<!-- END: HeaderSection -->
+<!-- Search and Compose -->
+<!-- BEGIN: MainScrollableArea -->
+<main class="flex-1 overflow-y-auto px-5 pt-4 pb-48">
+<!-- Section: Đã Ghim (Pinned) -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">Đã Ghim</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Ghi chú cuộc họp</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Bàn về kế hoạch triển khai quý 3, phân công nhiệm vụ cho từng thành viên trong...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            12 Thg 5
+          </div>
+</article>
+</section>
+<!-- Section: Hôm nay (Today) -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">Hôm nay</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Tài liệu tham khảo UX</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Các pattern thiết kế mới trên mobile, phân tích luồng đăng ký người dùng...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            10 Thg 5
+          </div>
+</article>
+</section>
+<!-- Section: 7 ngày trước (7 days ago) -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">7 ngày trước</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Ghi chú cuộc họp</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Bàn về kế hoạch triển khai quý 3, phân công nhiệm vụ cho từng thành viên trong...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            12 Thg 5
+          </div>
+</article>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Ghi chú cuộc họp</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Bàn về kế hoạch triển khai quý 3, phân công nhiệm vụ cho từng thành viên trong...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            12 Thg 5
+          </div>
+</article>
+</section>
+<!-- Section: 30 ngày trước -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">30 ngày trước</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Kế hoạch Marketing</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Chiến dịch quảng cáo mùa hè, ngân sách dự kiến và các kênh phân phối chính...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            20 Thg 4
+          </div>
+</article>
+</section>
+<!-- Section: Tháng trước -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">Tháng trước</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Ý tưởng thiết kế App</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Tổng hợp các wireframe nháp cho luồng thanh toán, cần review lại với team dev...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            05 Thg 4
+          </div>
+</article>
+</section>
+<!-- Section: Năm 2024 -->
+<section class="mb-8">
+<h2 class="font-serif text-[26px] font-bold text-titleColor mb-4">Năm 2024</h2>
+<article class="bg-cardBg rounded-2xl p-5 mb-4 shadow-sm border border-borderColor/30">
+<h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">Mục tiêu năm mới</h3>
+<p class="text-textBody text-sm leading-relaxed mb-4 line-clamp-2">
+            Danh sách các kỹ năng cần học: React Native, UI Animation, Tiếng Anh giao tiếp...
+          </p>
+<div class="flex items-center text-xs text-textMuted font-medium">
+<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+            01 Thg 1
+          </div>
+</article>
+</section>
+</main>
+<!-- END: MainScrollableArea -->
+<!-- BEGIN: BottomNavigation -->
+<div class="absolute bottom-[88px] left-0 w-full px-5 py-4 bg-appBg/95 backdrop-blur-sm border-t border-borderColor/30 z-20 flex items-center gap-3">
+<div class="relative flex-1">
+<div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<input class="w-full pl-11 pr-4 py-2.5 bg-cardBg border border-borderColor rounded-full text-sm text-gray-800 placeholder-textMuted focus:outline-none focus:ring-1 focus:ring-titleColor focus:border-titleColor shadow-sm" placeholder="Search notes..." type="text"/>
+</div>
+<button aria-label="Create new note" class="w-12 h-12 bg-fabBg rounded-full shadow-lg flex shrink-0 items-center justify-center text-white hover:bg-[#684b39] transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div><nav class="absolute bottom-0 w-full bg-navBg border-t border-borderColor/40 pb-6 pt-3 px-2 flex justify-around items-center z-10 rounded-t-3xl">
+<!-- Active Item: Note -->
+<a class="flex flex-col items-center bg-navActive px-6 py-1.5 rounded-full text-gray-900 transition-colors" href="#">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 011.875 1.875v11.25a1.875 1.875 0 01-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V6.375c0-1.036.84-1.875 1.875-1.875z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[11px] font-medium mt-1">Note</span>
+</a>
+<!-- Inactive Item: Calendar -->
+<a class="flex flex-col items-center text-gray-500 hover:text-gray-800 transition-colors px-4 py-1" href="#">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[11px] font-medium mt-1">Calendar</span>
+</a>
+<!-- Inactive Item: Journal -->
+<a class="flex flex-col items-center text-gray-500 hover:text-gray-800 transition-colors px-4 py-1" href="#">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[11px] font-medium mt-1">Journal</span>
+</a>
+<!-- Inactive Item: Settings -->
+<a class="flex flex-col items-center text-gray-500 hover:text-gray-800 transition-colors px-4 py-1" href="#">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[11px] font-medium mt-1">Settings</span>
+</a>
+</nav>
+<!-- END: BottomNavigation -->
+</div>
+</body></html>

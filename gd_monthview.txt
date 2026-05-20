@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Month View - Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#eae8e3",
+                        "background": "#fbf9f4",
+                        "surface-container-highest": "#e4e2dd",
+                        "primary-fixed": "#cceace",
+                        "outline-variant": "#c2c8c0",
+                        "on-tertiary-fixed-variant": "#603f2f",
+                        "on-primary-fixed-variant": "#334d38",
+                        "surface-dim": "#dbdad5",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#fbf9f4",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#2c1600",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "outline": "#737972",
+                        "tertiary-fixed-dim": "#ebbda6",
+                        "tertiary-container": "#c29782",
+                        "surface-container-low": "#f5f3ee",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#4a654e",
+                        "primary": "#4a654e",
+                        "primary-fixed-dim": "#b0ceb2",
+                        "primary-container": "#8ba88e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#424842",
+                        "surface-container": "#f0eee9",
+                        "secondary-container": "#ffca98",
+                        "on-primary-container": "#233d29",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf9f4",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c19",
+                        "on-tertiary-container": "#4e3020",
+                        "on-background": "#1b1c19",
+                        "secondary-fixed": "#ffdcbd",
+                        "on-secondary-container": "#7a532a",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-tertiary-fixed": "#2e1507",
+                        "on-primary-fixed": "#07200f",
+                        "surface-variant": "#e4e2dd",
+                        "tertiary": "#7a5644",
+                        "secondary": "#7d562d",
+                        "inverse-surface": "#30312e",
+                        "inverse-primary": "#b0ceb2",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "gutter": "12px",
+                        "container-margin": "20px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "title-lg": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "label-sm": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "display-lg": [
+                            "Newsreader"
+                        ],
+                        "body-md": [
+                            "Plus Jakarta Sans"
+                        ],
+                        "headline-md": [
+                            "Newsreader"
+                        ]
+                    },
+                    "fontSize": {
+                        "title-lg": [
+                            "20px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "display-lg": [
+                            "40px",
+                            {
+                                "lineHeight": "48px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-md": [
+                            "16px",
+                            {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-md": [
+                            "28px",
+                            {
+                                "lineHeight": "36px",
+                                "fontWeight": "500"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for month chips to maintain clean aesthetic */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .grid-rows-calendar {
+            grid-template-rows: auto repeat(5, minmax(100px, 1fr));
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim docked full-width top-0 border-b border-outline-variant/30 flex justify-between items-center px-gutter w-full h-16 shrink-0 z-10 sticky">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex-1 flex justify-center items-center">
+<h1 class="font-headline-md text-headline-md text-secondary dark:text-secondary-fixed-dim font-bold tracking-tight">Today</h1>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">calendar_today</span>
+</button>
+</header>
+<!-- Month Chips (Sub-header) -->
+<nav class="bg-surface py-sm px-gutter border-b border-outline-variant/20 shrink-0 overflow-x-auto no-scrollbar flex space-x-sm items-center shadow-sm">
+<button class="font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low transition-colors whitespace-nowrap">April</button>
+<button class="font-label-sm text-label-sm px-4 py-2 rounded-full border border-primary bg-primary text-on-primary whitespace-nowrap shadow-sm shadow-primary/20 transition-all scale-95">May</button>
+<button class="font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low transition-colors whitespace-nowrap">June</button>
+<button class="font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low transition-colors whitespace-nowrap">July</button>
+<button class="font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low transition-colors whitespace-nowrap">August</button>
+</nav>
+<!-- Main Content: Full Grid Calendar -->
+<main class="flex-1 overflow-y-auto bg-surface flex flex-col p-2">
+<div class="grid grid-cols-7 grid-rows-calendar h-full w-full gap-px bg-outline-variant/30 rounded-lg overflow-hidden border border-outline-variant/30">
+<!-- Days of Week Header -->
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Mon</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Tue</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Wed</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Thu</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Fri</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Sat</div>
+<div class="bg-surface-container-low text-center py-xs font-label-sm text-label-sm text-on-surface-variant">Sun</div>
+<!-- Row 1 -->
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-outline text-right block mb-1">29</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-outline text-right block mb-1">30</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">1</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">2</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">3</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-error text-right block mb-1">4</span>
+<div class="bg-error text-on-error rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span>Overdue</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">5</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Đá bóng</span>
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">6</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">7</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Học tiến...</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">8</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">9</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">10</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Đá bóng</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1 bg-surface-container-low inset-ring-1 inset-ring-primary/20">
+<span class="font-display-lg text-[14px] leading-tight text-primary font-bold text-right block mb-1">11</span>
+<div class="bg-primary-container text-on-primary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between shadow-sm">
+<span class="truncate">Thi trí tuệ...</span>
+</div>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between shadow-sm">
+<span class="truncate">Học tiến...</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">12</span>
+</div>
+<!-- Row 3 -->
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">13</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">14</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">15</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Đá bóng</span>
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">16</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">17</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">18</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">19</span>
+</div>
+<!-- Row 4 -->
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">20</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">21</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Học tiến...</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">22</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">23</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">24</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">25</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">26</span>
+</div>
+<!-- Row 5 -->
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">27</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">28</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">29</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">30</span>
+<div class="bg-secondary-container text-on-secondary-container rounded-sm px-1 py-0.5 text-[10px] leading-tight font-medium truncate flex items-center justify-between">
+<span class="truncate">Đá bóng</span>
+</div>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-on-surface text-right block mb-1">31</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-outline text-right block mb-1">1</span>
+</div>
+<div class="bg-surface p-1 min-h-[100px] flex flex-col space-y-1">
+<span class="font-display-lg text-[14px] leading-tight text-outline text-right block mb-1">2</span>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button aria-label="Add Event" class="fixed bottom-24 right-6 bg-tertiary text-on-tertiary w-14 h-14 rounded-xl shadow-lg shadow-tertiary/30 flex items-center justify-center hover:bg-tertiary/90 transition-colors z-40 md:bottom-8 border border-outline-variant/10">
+<span class="material-symbols-outlined text-3xl font-light">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container-highest text-primary dark:text-primary-fixed-dim font-label-sm text-label-sm font-display-lg text-display-lg text-primary docked full-width bottom-0 rounded-t-xl border-t border-outline-variant/20 shadow-md-soft dark:shadow-none fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1">edit_note</span>
+<span class="font-label-sm text-label-sm">Note</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-container dark:bg-tertiary text-on-tertiary-container dark:text-on-tertiary rounded-full px-5 py-1 scale-90 duration-200 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-label-sm text-label-sm">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1">book_5</span>
+<span class="font-label-sm text-label-sm">Journal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+</body></html>
