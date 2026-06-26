@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "830245143818",
+    "project_id": "only4u-5d435",
+    "storage_bucket": "only4u-5d435.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830245143818:android:4ab4e1a46dffc8cd9fe6f3",
+        "android_client_info": {
+          "package_name": "com.scalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830245143818-19lpcht1tvaohrpec7hh7h3dfvut8srm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scalendar",
+            "certificate_hash": "ec6b31a0bb76d65baf380209e31c3c722abdd1d7"
+          }
+        },
+        {
+          "client_id": "830245143818-fitkmutmcc1fpsoagonas51p3rdob7q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0k-svOOvy-XkKa27wNb004EHBaLEU3JU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830245143818-fitkmutmcc1fpsoagonas51p3rdob7q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

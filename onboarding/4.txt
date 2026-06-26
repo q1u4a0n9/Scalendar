@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<title>Feature Introduction - Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#2e1507",
+                        "inverse-surface": "#30312e",
+                        "on-tertiary-container": "#4e3020",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-secondary": "#ffffff",
+                        "background": "#fbf9f4",
+                        "on-secondary-fixed": "#2c1600",
+                        "on-primary-fixed": "#07200f",
+                        "outline": "#737972",
+                        "secondary": "#7d562d",
+                        "primary-fixed-dim": "#b0ceb2",
+                        "tertiary-container": "#c29782",
+                        "outline-variant": "#c2c8c0",
+                        "on-surface": "#1b1c19",
+                        "surface-container-highest": "#e4e2dd",
+                        "secondary-container": "#ffca98",
+                        "on-surface-variant": "#424842",
+                        "on-background": "#1b1c19",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#7a5644",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-dim": "#dbdad5",
+                        "on-primary-container": "#233d29",
+                        "surface": "#fbf9f4",
+                        "primary": "#4a654e",
+                        "inverse-primary": "#b0ceb2",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e4e2dd",
+                        "secondary-fixed": "#ffdcbd",
+                        "surface-bright": "#fbf9f4",
+                        "surface-container": "#f0eee9",
+                        "surface-container-low": "#f5f3ee",
+                        "tertiary-fixed-dim": "#ebbda6",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#cceace",
+                        "surface-container-high": "#eae8e3",
+                        "on-tertiary-fixed-variant": "#603f2f",
+                        "surface-tint": "#4a654e",
+                        "on-secondary-fixed-variant": "#623f18",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#7a532a",
+                        "primary-container": "#8ba88e",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#f0bd8b",
+                        "on-primary-fixed-variant": "#334d38"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "container-margin": "20px",
+                        "gutter": "12px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Newsreader"],
+                        "headline-md": ["Newsreader"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(245, 243, 238, 0.8) 0%, rgba(251, 249, 244, 0) 70%),
+                repeating-linear-gradient(transparent, transparent 31px, rgba(194, 200, 192, 0.1) 31px, rgba(194, 200, 192, 0.1) 32px);
+            background-color: #fbf9f4;
+            background-attachment: fixed;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .icon-floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex flex-col justify-between pt-safe pb-safe antialiased relative selection:bg-primary-container selection:text-on-primary-container">
+<div class="grain-overlay"></div>
+<!-- Top App Bar - Linear Onboarding Style -->
+<header class="flex justify-between items-center px-container-margin py-md w-full h-16 z-10 relative"><img src="data:image/png;base64,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" alt="Scalendar Brand Logo" class="w-8 h-8 object-contain mr-2">
+<button aria-label="Go back" class="text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-full p-2 flex items-center justify-center group">
+<span class="material-symbols-outlined text-[24px] group-hover:-translate-x-1 transition-transform duration-200">arrow_back</span>
+</button>
+<div class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">
+            4 / 7
+        </div>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-container-margin relative z-10 max-w-lg mx-auto w-full">
+<!-- Feature Graphic: Soft Paper Card -->
+<div class="relative mb-xl w-64 h-64 flex items-center justify-center">
+<!-- Decorative soft background blobs -->
+<div class="absolute inset-0 bg-primary-container/20 rounded-full blur-2xl transform scale-110"></div>
+<div class="absolute -top-4 -right-4 w-32 h-32 bg-secondary-container/20 rounded-full blur-xl"></div>
+<!-- The Card -->
+<div class="relative w-48 h-48 bg-surface border border-outline-variant/30 rounded-2xl shadow-[0_8px_30px_rgb(74,101,78,0.08)] flex items-center justify-center transform rotate-[-2deg] transition-transform duration-500 hover:rotate-0 icon-floating">
+<!-- Inner Bevel -->
+<div class="absolute inset-0 border border-white/50 rounded-2xl pointer-events-none"></div>
+<span class="material-symbols-outlined text-[80px] text-primary" style="font-variation-settings: 'FILL' 0, 'wght' 200;">
+                    calendar_month
+                </span>
+<!-- Decorative Elements indicating schedule/journaling -->
+<div class="absolute -bottom-3 -right-3 w-16 h-16 bg-tertiary-container rounded-lg shadow-sm border border-outline-variant/20 flex items-center justify-center transform rotate-12">
+<span class="material-symbols-outlined text-[24px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1, 'wght' 300;">
+                        edit_note
+                    </span>
+</div>
+</div>
+</div>
+<!-- Typography Section -->
+<div class="text-center space-y-md w-full max-w-sm">
+<h1 class="font-display-lg text-display-lg text-primary">Này [Tên], quản lý lịch dễ dàng hơn</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[280px] mx-auto leading-relaxed">
+                Xem lịch theo ngày, tuần, tháng chỉ trong một chạm
+            </p>
+</div>
+</main>
+<!-- Bottom Actions & Indicators -->
+<footer class="w-full px-container-margin pb-xl pt-lg flex flex-col items-center gap-lg relative z-10 bg-gradient-to-t from-surface via-surface to-transparent">
+<!-- Dot Indicators -->
+<div class="flex gap-2 items-center mb-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-primary transition-all duration-300"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant transition-all duration-300"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant transition-all duration-300"></div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full max-w-sm bg-primary text-on-primary font-title-lg text-title-lg py-4 px-6 rounded-full shadow-[0_4px_14px_0_rgb(74,101,78,0.2)] hover:bg-surface-tint hover:shadow-[0_6px_20px_0_rgb(74,101,78,0.25)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 flex items-center justify-center gap-2 group">
+            Tiếp tục
+            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform duration-200">arrow_forward</span>
+</button>
+</footer>
+
+
+</body></html>

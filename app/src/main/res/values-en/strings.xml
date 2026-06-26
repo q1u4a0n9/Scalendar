@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Scalendar</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_notes">Notes</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_journal">Journal</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Drawer -->
+    <string name="drawer_calendar">Calendar</string>
+    <string name="drawer_day">Day</string>
+    <string name="drawer_week">Week</string>
+    <string name="drawer_month">Month</string>
+    <string name="drawer_categories">CATEGORIES</string>
+
+    <!-- Entry Categories -->
+    <string name="category_task">Task</string>
+    <string name="category_class">Class</string>
+    <string name="category_sport">Sport</string>
+    <string name="category_exam">Exam</string>
+    <string name="category_birthday">Birthday</string>
+    <string name="category_event">Event</string>
+
+    <!-- Time of Day -->
+    <string name="time_anytime">Anytime</string>
+    <string name="time_morning">Morning</string>
+    <string name="time_afternoon">Afternoon</string>
+    <string name="time_evening">Evening</string>
+
+    <!-- Common Actions -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_close">Close</string>
+    <string name="action_add">Add</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_continue_editing">Keep editing</string>
+    <string name="action_back">Back</string>
+    <string name="action_start">Get started</string>
+    <string name="action_next">Continue</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
+
+    <!-- Day View -->
+    <string name="dayview_today">Today</string>
+    <string name="dayview_no_events">No events</string>
+    <string name="dayview_add_event">Add event</string>
+    <string name="dayview_allday">All day</string>
+
+    <!-- Entry Detail Sheet -->
+    <string name="detail_delete_event">Delete event</string>
+    <string name="detail_delete_recurring_title">Delete recurring event</string>
+    <string name="detail_delete_this">This event</string>
+    <string name="detail_delete_all">All events</string>
+
+    <!-- Add Entry Sheet -->
+    <string name="add_entry_title_hint">Add title</string>
+    <string name="add_entry_desc_hint">Add description</string>
+    <string name="add_entry_location_hint">Add location</string>
+    <string name="add_entry_deadline">Add deadline</string>
+    <string name="add_entry_reminder">Reminder</string>
+    <string name="add_entry_recurrence">Repeat</string>
+    <string name="add_entry_no_reminder">No notification</string>
+    <string name="add_entry_discard_title">Discard changes?</string>
+    <string name="add_entry_discard_message">Your changes will not be saved.</string>
+
+    <!-- Week View -->
+    <string name="weekview_today">Today</string>
+
+    <!-- Month View -->
+    <string name="monthview_today">Today</string>
+
+    <!-- Journal -->
+    <string name="journal_title">Journal</string>
+    <string name="journal_empty">No events</string>
+
+    <!-- Notes -->
+    <string name="notes_title">Notes</string>
+    <string name="notes_add_title">Title</string>
+    <string name="notes_add_content">Content</string>
+    <string name="notes_empty">No notes yet</string>
+    <string name="notes_pinned">PINNED</string>
+    <string name="notes_today">TODAY</string>
+    <string name="notes_last_7">LAST 7 DAYS</string>
+    <string name="notes_last_30">LAST 30 DAYS</string>
+    <string name="notes_last_month">LAST MONTH</string>
+    <string name="notes_older">OLDER</string>
+    <string name="notes_delete_confirm">Delete this note?</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search events…</string>
+    <string name="search_enter_keyword">Enter a keyword to search</string>
+    <string name="search_no_results">No results found</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_general">General</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_about">About</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_home_view">Default screen</string>
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_lang_vi">Tiếng Việt</string>
+    <string name="settings_lang_en">English</string>
+    <string name="settings_home_today">Today (Day view)</string>
+    <string name="settings_home_week">Week</string>
+    <string name="settings_home_month">Month</string>
+    <string name="settings_version">Version 1.0.0</string>
+    <string name="settings_feedback">Send feedback</string>
+
+    <!-- Auth -->
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_confirm_password">Confirm password</string>
+    <string name="auth_tab_signin">Sign in</string>
+    <string name="auth_tab_signup">Sign up</string>
+    <string name="auth_loading">Processing…</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">Your personal notebook</string>
+
+    <!-- Notifications -->
+    <string name="notif_title">Scalendar – Reminder</string>
+    <string name="notif_default_title">Event</string>
+    <string name="notif_starting">Event starting: %1$s</string>
+    <string name="notif_minutes">%1$d minutes left: %2$s</string>
+    <string name="notif_hours">%1$d hours left: %2$s</string>
+    <string name="notif_tomorrow">Tomorrow: %1$s</string>
+    <string name="notif_days">%1$d days left: %2$s</string>
+
+    <!-- Recurrence -->
+    <string name="recurrence_none">Does not repeat</string>
+    <string name="recurrence_daily">Daily</string>
+    <string name="recurrence_weekly">Weekly</string>
+    <string name="recurrence_monthly">Monthly</string>
+    <string name="recurrence_yearly">Yearly</string>
+
+    <!-- Day of week abbreviations (Mon-first) -->
+    <string name="dow_mon">Mo</string>
+    <string name="dow_tue">Tu</string>
+    <string name="dow_wed">We</string>
+    <string name="dow_thu">Th</string>
+    <string name="dow_fri">Fr</string>
+    <string name="dow_sat">Sa</string>
+    <string name="dow_sun">Su</string>
+
+    <!-- DayView TimeSlot -->
+    <string name="slot_empty">Nothing here</string>
+    <string name="time_start">Start</string>
+    <string name="time_end">End</string>
+
+    <!-- AddEntrySheet -->
+    <string name="sheet_cancel">Cancel</string>
+    <string name="sheet_save">Save</string>
+    <string name="sheet_save_recurring">Save (%1$s)</string>
+    <string name="sheet_edit_title">Edit %1$s</string>
+    <string name="sheet_discard_edit">Discard changes?</string>
+    <string name="sheet_discard_new">Discard this %1$s?</string>
+    <string name="sheet_discard_confirm">Discard</string>
+    <string name="sheet_keep_editing">Keep editing</string>
+    <string name="field_title_hint">Title</string>
+    <string name="field_name_hint">Add name</string>
+    <string name="field_allday">All day</string>
+    <string name="field_location_hint">Add location</string>
+    <string name="field_description_hint">Description (optional)</string>
+    <string name="field_repeat_until">Repeat until</string>
+    <string name="field_occurrences">Creates %1$d occurrences</string>
+    <string name="field_deadline_add">Add deadline</string>
+    <string name="field_deadline_label">Due</string>
+    <string name="field_color">Color</string>
+    <string name="field_attach_note">Attach note</string>
+    <string name="field_pick_note">Pick a note</string>
+    <string name="field_close_notes">Close list</string>
+    <string name="field_no_notes">No notes yet</string>
+    <string name="field_birthday_include_year">Include year</string>
+    <string name="field_birthday_yearly">Repeat every year</string>
+    <string name="field_custom_reminder">Custom…</string>
+    <string name="custom_reminder_title">Custom</string>
+    <string name="custom_reminder_done">Done</string>
+
+    <!-- Recurrence options -->
+    <string name="rec_none">Does not repeat</string>
+    <string name="rec_daily">Daily</string>
+    <string name="rec_weekly">Weekly</string>
+    <string name="rec_monthly">Monthly</string>
+    <string name="rec_yearly">Yearly</string>
+
+    <!-- Reminder display labels (AddEntrySheet dropdown) -->
+    <string name="reminder_none_short">None</string>
+    <string name="reminder_at_start">At start</string>
+    <string name="reminder_before_10min">10 minutes before</string>
+    <string name="reminder_before_30min">30 minutes before</string>
+    <string name="reminder_before_1h">1 hour before</string>
+    <string name="reminder_before_1day">1 day before</string>
+
+    <!-- Reminder display label (EntryDetailSheet) -->
+    <string name="reminder_no_alert">No alert</string>
+    <string name="reminder_at_event">At time of event</string>
+    <string name="reminder_5min">5 minutes before</string>
+    <string name="reminder_10min">10 minutes before</string>
+    <string name="reminder_15min">15 minutes before</string>
+    <string name="reminder_30min">30 minutes before</string>
+    <string name="reminder_1h">1 hour before</string>
+    <string name="reminder_2h">2 hours before</string>
+    <string name="reminder_1day">1 day before</string>
+    <string name="reminder_custom_min">%1$d minutes before</string>
+    <string name="reminder_custom_h">%1$d hours before</string>
+    <string name="reminder_custom_hm">%1$d h %2$d min before</string>
+    <string name="reminder_custom_days">%1$d days before</string>
+    <string name="reminder_custom_before_min">%1$d minutes before</string>
+    <string name="reminder_custom_before_h">%1$d hours before</string>
+    <string name="reminder_custom_before_hm">%1$d h %2$d min before</string>
+    <string name="reminder_custom_before_days">%1$d days before</string>
+    <string name="reminder_custom_before_dh">%1$d days %2$d h before</string>
+
+    <!-- EntryDetailSheet -->
+    <string name="detail_close">Close</string>
+    <string name="detail_edit">Edit</string>
+    <string name="detail_allday">All day</string>
+    <string name="detail_rec_daily">Repeats daily</string>
+    <string name="detail_rec_weekly">Repeats weekly</string>
+    <string name="detail_rec_monthly">Repeats monthly</string>
+    <string name="detail_rec_yearly">Repeats yearly</string>
+
+    <!-- WeekView swim-lane labels -->
+    <string name="slot_anytime_short">Anytime</string>
+    <string name="slot_morning_short">Morning</string>
+    <string name="slot_afternoon_short">Afternoon</string>
+    <string name="slot_evening_short">Evening</string>
+
+    <!-- AppNavigation Drawer -->
+    <string name="drawer_title">Calendar</string>
+
+    <!-- NoteGroup section headers -->
+    <string name="note_group_pinned">Pinned</string>
+    <string name="note_group_today">Today</string>
+    <string name="note_group_7days">7 days ago</string>
+    <string name="note_group_30days">30 days ago</string>
+    <string name="note_group_last_month">Last month</string>
+    <string name="note_group_older">Older</string>
+    <string name="notes_search_hint">Search…</string>
+    <string name="notes_new_note">New note</string>
+    <string name="notes_no_results">No results found</string>
+    <string name="notes_empty_state">No notes yet</string>
+    <string name="notes_view_list">List view</string>
+    <string name="notes_view_grid">Gallery view</string>
+
+    <!-- Auth -->
+    <string name="auth_hero_title">Manage your time</string>
+    <string name="auth_hero_subtitle">Calendar · Journal · Notes — all in one place</string>
+    <string name="auth_continue_email">Continue with Email</string>
+    <string name="auth_continue_google">Continue with Google</string>
+    <string name="auth_login_title">Sign in</string>
+    <string name="auth_login_welcome">Welcome back!</string>
+    <string name="auth_no_account">No account? Sign up</string>
+    <string name="auth_register_title">Create account</string>
+    <string name="auth_password_min">Password must be at least 6 characters</string>
+    <string name="auth_password_mismatch">Passwords do not match</string>
+    <string name="auth_has_account">Already have an account? Sign in</string>
+    <string name="auth_back">Back</string>
+
+    <!-- Settings (additional) -->
+    <string name="cal_holiday">Holidays</string>
+
+    <!-- WeekView deadline chip prefix -->
+    <string name="deadline_prefix">Due: %1$s</string>
+
+    <!-- CustomReminderDialog units -->
+    <string name="unit_minute">min</string>
+    <string name="unit_hour">hour</string>
+    <string name="unit_day">day</string>
+    <string name="custom_reminder_notification">Notification</string>
+
+    <!-- SettingsScreen General -->
+    <string name="settings_general_title">General</string>
+    <string name="settings_home_view_label">Default screen</string>
+    <string name="settings_theme_label">Theme</string>
+    <string name="settings_lang_label">Language</string>
+    <string name="settings_theme_system_short">System</string>
+    <string name="settings_theme_light_short">Light</string>
+    <string name="settings_theme_dark_short">Dark</string>
+    <string name="settings_home_today_short">Today</string>
+    <string name="settings_home_week_short">Week</string>
+    <string name="settings_home_month_short">Month</string>
+
+    <!-- SettingsScreen Main & Calendar -->
+    <string name="settings_add_calendar">Add calendar</string>
+    <string name="settings_special_label">SPECIAL CALENDARS</string>
+    <string name="settings_national_holidays">National Holidays</string>
+    <string name="settings_not_showing">NOT SHOWING</string>
+    <string name="settings_vn_all_holidays">All holidays</string>
+    <string name="settings_vn_all_desc">Show all national and lunar calendar holidays</string>
+    <string name="settings_vn_national_only">National holidays only</string>
+    <string name="settings_vn_none">None</string>
+    <string name="settings_pick_color">Pick a color</string>
+    <string name="settings_edit_calendar">Edit calendar</string>
+    <string name="settings_add_holidays">Add national holidays</string>
+    <string name="settings_default_notif_label">DEFAULT NOTIFICATION</string>
+    <string name="settings_delete_calendar">Delete calendar</string>
+    <string name="settings_add_new_calendar">Add new calendar</string>
+    <string name="settings_calendar_name">Calendar name</string>
+    <string name="settings_color_custom">Custom color</string>
+    <string name="settings_about_description">A personal calendar and task management app. Helps you track classes, tasks, exams, birthdays, and important events.</string>
+    <string name="settings_country_vietnam">Vietnam</string>
+
+    <!-- AccountScreen -->
+    <string name="account_full_name">Full name</string>
+    <string name="account_save_hint">Tap ✓ to save</string>
+    <string name="account_add_password">Add password</string>
+    <string name="account_2fa_title">Two-factor authentication</string>
+    <string name="account_require_2fa">Require 2FA</string>
+    <string name="account_delete">Delete account</string>
+    <string name="account_delete_title">Delete account?</string>
+    <string name="account_delete_message">All data and your account will be permanently deleted. This action cannot be undone.</string>
+
+    <!-- Accessibility / contentDescription -->
+    <string name="action_search">Search</string>
+    <string name="action_menu">Menu</string>
+    <string name="content_prev_week">Previous week</string>
+    <string name="content_next_week">Next week</string>
+    <string name="content_prev_month">Previous month</string>
+    <string name="content_next_month">Next month</string>
+    <string name="account_save_name">Save name</string>
+    <string name="onboarding_name_hint">Your name</string>
+    <string name="cd_completed">Completed</string>
+    <string name="cd_not_completed">Not completed</string>
+    <string name="fab_add_entry">Add entry</string>
+    <string name="action_pin">Pin</string>
+    <string name="action_unpin">Unpin</string>
+    <string name="notes_pin_note">Pin Note</string>
+    <string name="notes_unpin_note">Unpin Note</string>
+    <string name="notes_editor_done">Done</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_name_title">What\'s your name?</string>
+    <string name="onboarding_name_subtitle">So Scalendar can personalize for you</string>
+    <string name="onboarding_role_title">Who are you?</string>
+    <string name="onboarding_role_subtitle">Help us tailor your experience.</string>
+    <string name="onboarding_role_student">Student</string>
+    <string name="onboarding_role_working">Working professional</string>
+    <string name="onboarding_role_other">Other</string>
+    <string name="onboarding_source_title">How did you find Scalendar?</string>
+    <string name="onboarding_source_subtitle">Help us understand your journey.</string>
+    <string name="onboarding_source_friends">Friend\'s recommendation</string>
+    <string name="onboarding_source_social">Social media</string>
+    <string name="onboarding_source_search">Found it by chance</string>
+    <string name="onboarding_source_other">Other</string>
+    <string name="onboarding_cal_title">Hey %1$s, scheduling made easy</string>
+    <string name="onboarding_cal_subtitle">View by day, week, or month — all in one place</string>
+    <string name="onboarding_journal_title">Capture every moment</string>
+    <string name="onboarding_journal_subtitle">Journal tracks the important events in your life</string>
+    <string name="onboarding_notes_title">Quick notes, anytime</string>
+    <string name="onboarding_notes_subtitle">Save ideas and plans the moment they come to mind</string>
+    <string name="onboarding_name_fallback">you</string>
+
+    <!-- Color names for calendar color picker -->
+    <string name="color_red_orange">Red-Orange</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_light_green">Light Green</string>
+    <string name="color_green">Green</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_sky_blue">Sky Blue</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_red">Red</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_gray">Gray</string>
+</resources>

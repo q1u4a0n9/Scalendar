@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Scalendar - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#2e1507",
+                      "inverse-surface": "#30312e",
+                      "on-tertiary-container": "#4e3020",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#f2f1ec",
+                      "on-secondary": "#ffffff",
+                      "background": "#fbf9f4",
+                      "on-secondary-fixed": "#2c1600",
+                      "on-primary-fixed": "#07200f",
+                      "outline": "#737972",
+                      "secondary": "#7d562d",
+                      "primary-fixed-dim": "#b0ceb2",
+                      "tertiary-container": "#c29782",
+                      "outline-variant": "#c2c8c0",
+                      "on-surface": "#1b1c19",
+                      "surface-container-highest": "#e4e2dd",
+                      "secondary-container": "#ffca98",
+                      "on-surface-variant": "#424842",
+                      "on-background": "#1b1c19",
+                      "error-container": "#ffdad6",
+                      "tertiary": "#7a5644",
+                      "tertiary-fixed": "#ffdbcb",
+                      "surface-dim": "#dbdad5",
+                      "on-primary-container": "#233d29",
+                      "surface": "#fbf9f4",
+                      "primary": "#4a654e",
+                      "inverse-primary": "#b0ceb2",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e4e2dd",
+                      "secondary-fixed": "#ffdcbd",
+                      "surface-bright": "#fbf9f4",
+                      "surface-container": "#f0eee9",
+                      "surface-container-low": "#f5f3ee",
+                      "tertiary-fixed-dim": "#ebbda6",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#cceace",
+                      "surface-container-high": "#eae8e3",
+                      "on-tertiary-fixed-variant": "#603f2f",
+                      "surface-tint": "#4a654e",
+                      "on-secondary-fixed-variant": "#623f18",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#7a532a",
+                      "primary-container": "#8ba88e",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#f0bd8b",
+                      "on-primary-fixed-variant": "#334d38"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "container-margin": "20px",
+                      "gutter": "12px",
+                      "xl": "40px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "title-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Newsreader"
+                      ],
+                      "headline-md": [
+                              "Newsreader"
+                      ],
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col items-center justify-center p-gutter"><div class="absolute top-0 left-0 p-lg">
+<img src="data:image/png;base64,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" alt="Scalendar Brand Logo" class="w-8 h-8 opacity-90">
+</div>
+<!-- Top: Logo -->
+<div class="mb-xl text-center">
+<div class="w-16 h-16 bg-surface-container-high rounded-xl mx-auto flex items-center justify-center mb-md border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-[32px]">calendar_month</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-secondary">Scalendar</h1>
+</div>
+<!-- Center: Content Card -->
+<div class="bg-surface-container-low rounded-xl p-lg w-full max-w-sm text-center border border-outline-variant/30 relative">
+<div class="absolute inset-x-0 top-0 h-[1px] bg-outline-variant/20 mx-4 mt-8"></div>
+<div class="absolute inset-x-0 top-0 h-[1px] bg-outline-variant/20 mx-4 mt-16"></div>
+<div class="absolute inset-x-0 top-0 h-[1px] bg-outline-variant/20 mx-4 mt-24"></div>
+<h2 class="font-display-lg text-display-lg text-primary mb-md relative z-10 pt-4">Lưu lịch của bạn</h2>
+<p class="font-body-md text-body-md text-on-surface-variant relative z-10 mb-xl">Đăng nhập để đồng bộ trên nhiều thiết bị</p>
+<!-- Bottom: Actions -->
+<div class="space-y-md relative z-10">
+<button class="w-full bg-surface-container-lowest text-on-surface font-title-lg text-title-lg py-md px-lg rounded-full border border-outline-variant/30 shadow-[0_4px_12px_rgba(74,101,78,0.05)] hover:bg-surface-container transition-colors flex items-center justify-center gap-sm">
+<svg class="w-6 h-6" viewBox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                Tiếp tục với Google
+            </button>
+<button class="w-full text-on-surface-variant font-label-sm text-label-sm py-sm hover:text-on-surface transition-colors uppercase tracking-wider">
+                Dùng không cần tài khoản
+            </button>
+</div>
+</div>
+
+
+</body></html>
