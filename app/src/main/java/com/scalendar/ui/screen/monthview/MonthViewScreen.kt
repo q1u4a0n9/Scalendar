@@ -8,9 +8,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,16 +22,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.scalendar.data.model.EntryCategory
+import com.scalendar.ui.component.EntryFab
+import com.scalendar.ui.component.EntryFabMenuOverlay
+import com.scalendar.ui.screen.dayview.AddEntrySheet
+import com.scalendar.ui.screen.dayview.DayViewViewModel
 import com.scalendar.ui.theme.displayBgColor
+import com.scalendar.ui.theme.displayFgColor
 import com.scalendar.ui.shared.SharedCalendarViewModel
+import com.scalendar.util.VietnamHolidays
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import com.scalendar.R
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.Locale
-
-private val MONTH_ONLY_FMT = DateTimeFormatter.ofPattern("MMM",      Locale.forLanguageTag("vi"))
-private val YEAR_HDR_FMT   = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.forLanguageTag("vi"))
-private val DOW_LABELS     = listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
 
 // ── Chip item types ───────────────────────────────────────────────────
 // Month → tappable chip; YearLabel → non-tappable year separator
@@ -71,18 +76,39 @@ private fun buildChipList(today: YearMonth, radius: Int = 60): List<ChipItem> {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MonthViewScreen(
-    sharedVm    : SharedCalendarViewModel,
-    onOpenDrawer: () -> Unit,
-    onDayClick  : (LocalDate) -> Unit,
-    viewModel   : MonthViewViewModel = hiltViewModel(),
+    sharedVm      : SharedCalendarViewModel,
+    onOpenDrawer  : () -> Unit,
+    onDayClick    : (LocalDate) -> Unit,
+    onOpenSearch  : () -> Unit          = {},
+    holidayVnMode : String              = "ALL",
+    holidayColor  : Color               = Color(0xFF26A69A),
+    viewModel     : MonthViewViewModel  = hiltViewModel(),
+    actionsVm     : DayViewViewModel    = hiltViewModel(),
 ) {
     val selectedDate    by sharedVm.selectedDate.collectAsState()
     val categoryFilters by sharedVm.categoryFilters.collectAsState()
     val uiState         by viewModel.uiState.collectAsState()
     val today           = remember { LocalDate.now() }
+    val notes           by actionsVm.notes.collectAsState()
+    val defaultNotifs   by actionsVm.defaultNotifs.collectAsState()
+
+    val locale         = LocalConfiguration.current.locales[0]
+    val YEAR_HDR_FMT   = remember(locale) { DateTimeFormatter.ofPattern("MMMM yyyy", locale) }
+    val dowLabels      = remember(locale) {
+        if (locale.language == "vi") listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
+        else listOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
+    }
+
+    var showFabMenu      by remember { mutableStateOf(false) }
+    var addEntryCategory by remember { mutableStateOf<EntryCategory?>(null) }
 
     val filteredEntries = remember(uiState.entries, categoryFilters) {
         uiState.entries.mapValues { (_, list) ->
+            list.filter { it.category in categoryFilters }
+        }
+    }
+    val filteredDeadlines = remember(uiState.deadlineEntries, categoryFilters) {
+        uiState.deadlineEntries.mapValues { (_, list) ->
             list.filter { it.category in categoryFilters }
         }
     }
@@ -109,6 +135,7 @@ fun MonthViewScreen(
         }
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -122,21 +149,27 @@ fun MonthViewScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onOpenDrawer) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
+                        Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.action_menu))
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.previousMonth() }) {
-                        Icon(Icons.Default.ChevronLeft, contentDescription = "Tháng trước")
+                    IconButton(onClick = onOpenSearch) {
+                        Icon(Icons.Outlined.Search, contentDescription = stringResource(R.string.action_search), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
-                    IconButton(onClick = { viewModel.nextMonth() }) {
-                        Icon(Icons.Default.ChevronRight, contentDescription = "Tháng sau")
+                    IconButton(onClick = {
+                        viewModel.goToToday()
+                        sharedVm.selectDate(LocalDate.now())
+                    }) {
+                        Icon(Icons.Outlined.CalendarToday, contentDescription = stringResource(R.string.monthview_today), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
             )
+        },
+        floatingActionButton = {
+            EntryFab(expanded = showFabMenu, onToggle = { showFabMenu = !showFabMenu })
         },
         containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
@@ -175,7 +208,7 @@ fun MonthViewScreen(
 
             // Day-of-week header
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
-                DOW_LABELS.forEach { label ->
+                dowLabels.forEach { label ->
                     Text(
                         text      = label,
                         modifier  = Modifier.weight(1f),
@@ -193,22 +226,50 @@ fun MonthViewScreen(
 
             // Calendar grid — weight(1f) fills all remaining height; no scroll needed
             MonthGrid(
-                yearMonth    = uiState.yearMonth,
-                entries      = filteredEntries,
-                today        = today,
-                selectedDate = selectedDate,
-                onDayClick   = onDayClick,
-                modifier     = Modifier
+                yearMonth       = uiState.yearMonth,
+                entries         = filteredEntries,
+                deadlineEntries = filteredDeadlines,
+                today           = today,
+                selectedDate    = selectedDate,
+                onDayClick      = onDayClick,
+                modifier        = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+                holidayVnMode   = holidayVnMode,
+                holidayColor    = holidayColor,
             )
         }
+    }
+
+    // ── FAB overlay ──────────────────────────────────────────────────
+    EntryFabMenuOverlay(
+        showMenu           = showFabMenu,
+        onDismiss          = { showFabMenu = false },
+        onCategorySelected = { cat -> addEntryCategory = cat; showFabMenu = false },
+    )
+    } // end Box
+
+    // ── Add Entry sheet ───────────────────────────────────────────────
+    if (addEntryCategory != null) {
+        AddEntrySheet(
+            initialCategory = addEntryCategory!!,
+            date            = selectedDate,
+            notes           = notes,
+            defaultNotifs   = defaultNotifs,
+            onSave          = { entity, recType, recEnd ->
+                actionsVm.saveEntry(entity, recType, recEnd)
+                addEntryCategory = null
+            },
+            onDismiss = { addEntryCategory = null },
+        )
     }
 }
 
 // ── Month chip — only shows short month name ("thg 5") ────────────────
 @Composable
 private fun MonthChip(ym: YearMonth, isSelected: Boolean, onClick: () -> Unit) {
+    val locale         = LocalConfiguration.current.locales[0]
+    val MONTH_ONLY_FMT = remember(locale) { DateTimeFormatter.ofPattern("MMM", locale) }
     val bg     = if (isSelected) MaterialTheme.colorScheme.primary
                  else            MaterialTheme.colorScheme.surface
     val fg     = if (isSelected) MaterialTheme.colorScheme.onPrimary
@@ -253,12 +314,15 @@ private fun YearSeparatorChip(year: Int) {
 // ── Calendar grid ─────────────────────────────────────────────────────
 @Composable
 private fun MonthGrid(
-    yearMonth   : YearMonth,
-    entries     : Map<LocalDate, List<com.scalendar.data.database.entity.EntryEntity>>,
-    today       : LocalDate,
-    selectedDate: LocalDate,
-    onDayClick  : (LocalDate) -> Unit,
-    modifier    : Modifier = Modifier,
+    yearMonth       : YearMonth,
+    entries         : Map<LocalDate, List<com.scalendar.data.database.entity.EntryEntity>>,
+    deadlineEntries : Map<LocalDate, List<com.scalendar.data.database.entity.EntryEntity>>,
+    today           : LocalDate,
+    selectedDate    : LocalDate,
+    onDayClick      : (LocalDate) -> Unit,
+    modifier        : Modifier = Modifier,
+    holidayVnMode   : String   = "ALL",
+    holidayColor    : Color    = Color(0xFF26A69A),
 ) {
     val firstDay    = yearMonth.atDay(1)
     val startOffset = (firstDay.dayOfWeek.value - 1).coerceIn(0, 6)
@@ -282,12 +346,15 @@ private fun MonthGrid(
             ) {
                 week.forEach { day ->
                     DayCell(
-                        date         = day,
-                        isToday      = day == today,
-                        isSelected   = day == selectedDate,
-                        entries      = if (day != null) entries[day] ?: emptyList() else emptyList(),
-                        onClick      = { if (day != null) onDayClick(day) },
-                        modifier     = Modifier.weight(1f),
+                        date          = day,
+                        isToday       = day == today,
+                        isSelected    = day == selectedDate,
+                        entries       = if (day != null) entries[day] ?: emptyList() else emptyList(),
+                        deadlines     = if (day != null) deadlineEntries[day] ?: emptyList() else emptyList(),
+                        onClick       = { if (day != null) onDayClick(day) },
+                        modifier      = Modifier.weight(1f),
+                        holidayVnMode = holidayVnMode,
+                        holidayColor  = holidayColor,
                     )
                 }
             }
@@ -299,12 +366,15 @@ private fun MonthGrid(
 // ── Day cell ──────────────────────────────────────────────────────────
 @Composable
 private fun DayCell(
-    date      : LocalDate?,
-    isToday   : Boolean,
-    isSelected: Boolean,
-    entries   : List<com.scalendar.data.database.entity.EntryEntity>,
-    onClick   : () -> Unit,
-    modifier  : Modifier = Modifier,
+    date          : LocalDate?,
+    isToday       : Boolean,
+    isSelected    : Boolean,
+    entries       : List<com.scalendar.data.database.entity.EntryEntity>,
+    deadlines     : List<com.scalendar.data.database.entity.EntryEntity>,
+    onClick       : () -> Unit,
+    modifier      : Modifier = Modifier,
+    holidayVnMode : String   = "ALL",
+    holidayColor  : Color    = Color(0xFF26A69A),
 ) {
     Column(
         modifier            = modifier
@@ -342,7 +412,18 @@ private fun DayCell(
             )
         }
 
-        Spacer(Modifier.height(2.dp))
+        // ── Holiday dot ───────────────────────────────────────────────
+        if (VietnamHolidays.isHoliday(date, holidayVnMode)) {
+            Box(
+                modifier = Modifier
+                    .size(4.dp)
+                    .clip(CircleShape)
+                    .background(holidayColor),
+            )
+            Spacer(Modifier.height(1.dp))
+        } else {
+            Spacer(Modifier.height(2.dp))
+        }
 
         // ── Entry chips: fill remaining height dynamically ────────────
         // BoxWithConstraints measures the actual remaining height so we
@@ -355,23 +436,35 @@ private fun DayCell(
             val CHIP_H = 15.dp   // approximate height per chip (9sp text + clip padding)
             val GAP    = 1.dp
             val maxVisible = maxOf(0, ((maxHeight + GAP) / (CHIP_H + GAP)).toInt())
-            val visible    = entries.take(maxVisible)
-            val overflow   = entries.size - visible.size
+
+            // Merge regular entries (false) + deadline chips (true) into one ordered list
+            val allChips = entries.map { it to false } + deadlines.map { it to true }
+            val visible  = allChips.take(maxVisible)
+            val overflow = allChips.size - visible.size
 
             Column(verticalArrangement = Arrangement.spacedBy(GAP)) {
-                visible.forEach { entry ->
+                visible.forEach { (entry, isDeadline) ->
+                    val chipBg = if (isDeadline)
+                        MaterialTheme.colorScheme.errorContainer
+                    else
+                        entry.displayBgColor()
+                    val chipFg = if (isDeadline)
+                        MaterialTheme.colorScheme.onErrorContainer
+                    else
+                        entry.displayFgColor()
+
                     Text(
-                        text     = entry.title,
+                        text     = if (isDeadline) stringResource(R.string.deadline_prefix, entry.title) else entry.title,
                         style    = MaterialTheme.typography.labelSmall.copy(
                             fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.85f,
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color    = MaterialTheme.colorScheme.onBackground,
+                        color    = chipFg,
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(2.dp))
-                            .background(entry.displayBgColor())
+                            .background(chipBg)
                             .padding(horizontal = 2.dp),
                     )
                 }

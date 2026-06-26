@@ -9,7 +9,6 @@ import com.scalendar.data.repository.EntryRepository
 import com.scalendar.data.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
@@ -36,26 +35,23 @@ class JournalViewModel @Inject constructor(
         .map { list -> list.groupBy { it.date } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
 
-
-    // Show a rolling window: past 6 months + next 6 months
+    // Show a rolling window: past 6 months + next 6 months.
+    // Journal shows ALL EXAM / BIRTHDAY / EVENT entries regardless of completion —
+    // the user keeps them for review.
     val uiState: StateFlow<JournalUiState> = run {
         val today  = LocalDate.now()
         val start  = today.minusMonths(6).withDayOfMonth(1)
         val end    = today.plusMonths(6).let { d ->
             d.withDayOfMonth(YearMonth.from(d).lengthOfMonth())
         }
+        val journalCategories = setOf(
+            EntryCategory.EXAM,
+            EntryCategory.BIRTHDAY,
+            EntryCategory.EVENT,
+        )
         repo.getByDateRange(start, end)
             .map { all ->
-                // Journal only shows upcoming important events:
-                // EXAM, BIRTHDAY, EVENT — and only those not yet completed.
-                val journalCategories = setOf(
-                    EntryCategory.EXAM,
-                    EntryCategory.BIRTHDAY,
-                    EntryCategory.EVENT,
-                )
-                val filtered = all.filter {
-                    !it.isCompleted && it.category in journalCategories
-                }
+                val filtered = all.filter { it.category in journalCategories }
                 val grouped = filtered
                     .groupBy { YearMonth.from(it.date) }
                     .entries
@@ -70,10 +66,4 @@ class JournalViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5_000),
         JournalUiState(isLoading = true),
     )
-
-    fun toggleComplete(entry: EntryEntity) {
-        viewModelScope.launch {
-            repo.setCompleted(entry.id, !entry.isCompleted)
-        }
-    }
 }

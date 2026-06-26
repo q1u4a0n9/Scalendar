@@ -12,6 +12,14 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE isPinned = 1 ORDER BY date DESC")
     fun getPinned(): Flow<List<NoteEntity>>
 
+    /** One-shot read — used for initial Firestore sync on account creation. */
+    @Query("SELECT * FROM notes ORDER BY isPinned DESC, date DESC")
+    suspend fun getAllOnce(): List<NoteEntity>
+
+    /** Delete all notes — called on sign-out to prevent data leakage between accounts. */
+    @Query("DELETE FROM notes")
+    suspend fun deleteAll()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: NoteEntity): Long
 

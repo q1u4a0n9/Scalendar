@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.scalendar.data.database.ScalendarDatabase
 import com.scalendar.data.database.dao.EntryDao
 import com.scalendar.data.database.dao.NoteDao
+import com.scalendar.data.database.dao.UserCalendarDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,9 +25,15 @@ object DatabaseModule {
                 ScalendarDatabase.MIGRATION_1_2,
                 ScalendarDatabase.MIGRATION_2_3,
                 ScalendarDatabase.MIGRATION_3_4,
+                ScalendarDatabase.MIGRATION_4_5,
+                ScalendarDatabase.MIGRATION_5_6,
+                ScalendarDatabase.MIGRATION_6_7,
+                ScalendarDatabase.MIGRATION_7_8,
+                ScalendarDatabase.MIGRATION_8_9,
             )
             .build()
 
-    @Provides fun provideEntryDao(db: ScalendarDatabase): EntryDao = db.entryDao()
-    @Provides fun provideNoteDao(db: ScalendarDatabase): NoteDao = db.noteDao()
+    @Provides fun provideEntryDao(db: ScalendarDatabase): EntryDao           = db.entryDao()
+    @Provides fun provideNoteDao(db: ScalendarDatabase): NoteDao             = db.noteDao()
+    @Provides fun provideUserCalendarDao(db: ScalendarDatabase): UserCalendarDao = db.userCalendarDao()
 }

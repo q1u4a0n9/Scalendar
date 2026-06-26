@@ -10,6 +10,8 @@ import javax.inject.Singleton
 class NoteRepository @Inject constructor(private val dao: NoteDao) {
     fun getAll(): Flow<List<NoteEntity>> = dao.getAll()
     fun getPinned(): Flow<List<NoteEntity>> = dao.getPinned()
+    suspend fun getAllOnce(): List<NoteEntity>  = dao.getAllOnce()
+    suspend fun deleteAll()                    = dao.deleteAll()
     suspend fun insert(note: NoteEntity): Long = dao.insert(note)
     suspend fun update(note: NoteEntity) = dao.update(note)
     suspend fun delete(note: NoteEntity) = dao.delete(note)

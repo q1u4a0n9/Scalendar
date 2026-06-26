@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Network access — required for Firebase Auth + Firestore -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Notification permission (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <!-- Exact alarm permission (Android 12+) -->
+    <!-- Exact alarm: USE_EXACT_ALARM is auto-granted on API 33+ for calendar apps.
+         SCHEDULE_EXACT_ALARM is kept for API 31-32 (requires user grant in system settings). -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <!-- Allow alarms to fire in low-power mode -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -35,6 +39,15 @@
         <receiver
             android:name=".notification.AlarmReceiver"
             android:exported="false" />
+
+        <!-- Reschedule all alarms after device reboot -->
+        <receiver
+            android:name=".notification.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

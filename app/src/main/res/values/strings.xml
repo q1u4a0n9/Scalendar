@@ -1,3 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Scalendar</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_notes">Ghi chú</string>
+    <string name="nav_calendar">Lịch</string>
+    <string name="nav_journal">Nhật ký</string>
+    <string name="nav_settings">Cài đặt</string>
+
+    <!-- Drawer -->
+    <string name="drawer_calendar">Lịch</string>
+    <string name="drawer_day">Ngày</string>
+    <string name="drawer_week">Tuần</string>
+    <string name="drawer_month">Tháng</string>
+    <string name="drawer_categories">DANH MỤC</string>
+
+    <!-- Entry Categories -->
+    <string name="category_task">Việc cần làm</string>
+    <string name="category_class">Lịch học</string>
+    <string name="category_sport">Thể thao</string>
+    <string name="category_exam">Bài kiểm tra</string>
+    <string name="category_birthday">Sinh nhật</string>
+    <string name="category_event">Lịch / Sự kiện</string>
+
+    <!-- Time of Day -->
+    <string name="time_anytime">Bất kỳ lúc nào</string>
+    <string name="time_morning">Buổi sáng</string>
+    <string name="time_afternoon">Buổi chiều</string>
+    <string name="time_evening">Buổi tối</string>
+
+    <!-- Common Actions -->
+    <string name="action_save">Lưu</string>
+    <string name="action_cancel">Hủy</string>
+    <string name="action_edit">Sửa</string>
+    <string name="action_delete">Xóa</string>
+    <string name="action_close">Đóng</string>
+    <string name="action_add">Thêm</string>
+    <string name="action_confirm">Xác nhận</string>
+    <string name="action_discard">Hủy thay đổi</string>
+    <string name="action_continue_editing">Tiếp tục chỉnh sửa</string>
+    <string name="action_back">Quay lại</string>
+    <string name="action_start">Bắt đầu</string>
+    <string name="action_next">Tiếp tục</string>
+    <string name="action_sign_out">Đăng xuất</string>
+    <string name="action_sign_in">Đăng nhập</string>
+    <string name="action_sign_up">Đăng ký</string>
+
+    <!-- Day View -->
+    <string name="dayview_today">Hôm nay</string>
+    <string name="dayview_no_events">Không có sự kiện</string>
+    <string name="dayview_add_event">Thêm sự kiện</string>
+    <string name="dayview_allday">Cả ngày</string>
+
+    <!-- Entry Detail Sheet -->
+    <string name="detail_delete_event">Xóa sự kiện</string>
+    <string name="detail_delete_recurring_title">Xóa sự kiện lặp lại</string>
+    <string name="detail_delete_this">Sự kiện này</string>
+    <string name="detail_delete_all">Tất cả sự kiện</string>
+
+    <!-- Add Entry Sheet -->
+    <string name="add_entry_title_hint">Thêm tiêu đề</string>
+    <string name="add_entry_desc_hint">Thêm mô tả</string>
+    <string name="add_entry_location_hint">Thêm địa điểm</string>
+    <string name="add_entry_deadline">Thêm thời hạn</string>
+    <string name="add_entry_reminder">Nhắc nhở</string>
+    <string name="add_entry_recurrence">Lặp lại</string>
+    <string name="add_entry_no_reminder">Không có thông báo</string>
+    <string name="add_entry_discard_title">Hủy thay đổi?</string>
+    <string name="add_entry_discard_message">Thay đổi của bạn sẽ không được lưu.</string>
+
+    <!-- Week View -->
+    <string name="weekview_today">Hôm nay</string>
+
+    <!-- Month View -->
+    <string name="monthview_today">Hôm nay</string>
+
+    <!-- Journal -->
+    <string name="journal_title">Nhật ký</string>
+    <string name="journal_empty">Không có sự kiện nào</string>
+
+    <!-- Notes -->
+    <string name="notes_title">Ghi chú</string>
+    <string name="notes_add_title">Tiêu đề</string>
+    <string name="notes_add_content">Nội dung</string>
+    <string name="notes_empty">Chưa có ghi chú nào</string>
+    <string name="notes_pinned">ĐÃ GHIM</string>
+    <string name="notes_today">HÔM NAY</string>
+    <string name="notes_last_7">7 NGÀY QUA</string>
+    <string name="notes_last_30">30 NGÀY QUA</string>
+    <string name="notes_last_month">THÁNG TRƯỚC</string>
+    <string name="notes_older">CŨ HƠN</string>
+    <string name="notes_delete_confirm">Xóa ghi chú này?</string>
+
+    <!-- Search -->
+    <string name="search_hint">Tìm kiếm sự kiện...</string>
+    <string name="search_enter_keyword">Nhập từ khoá để tìm kiếm</string>
+    <string name="search_no_results">Không tìm thấy kết quả</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_general">Chung</string>
+    <string name="settings_account">Tài khoản</string>
+    <string name="settings_about">Về ứng dụng</string>
+    <string name="settings_theme">Giao diện</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_home_view">Màn hình mặc định</string>
+    <string name="settings_theme_system">Theo hệ thống</string>
+    <string name="settings_theme_light">Sáng</string>
+    <string name="settings_theme_dark">Tối</string>
+    <string name="settings_lang_vi">Tiếng Việt</string>
+    <string name="settings_lang_en">English</string>
+    <string name="settings_home_today">Hôm nay (Ngày)</string>
+    <string name="settings_home_week">Tuần</string>
+    <string name="settings_home_month">Tháng</string>
+    <string name="settings_version">Phiên bản 1.0.0</string>
+    <string name="settings_feedback">Gửi phản hồi</string>
+
+    <!-- Auth -->
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Mật khẩu</string>
+    <string name="auth_confirm_password">Xác nhận mật khẩu</string>
+    <string name="auth_tab_signin">Đăng nhập</string>
+    <string name="auth_tab_signup">Đăng ký</string>
+    <string name="auth_loading">Đang xử lý...</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">Sổ tay của bạn</string>
+
+    <!-- Notifications -->
+    <string name="notif_title">Scalendar – Nhắc nhở</string>
+    <string name="notif_default_title">Sự kiện</string>
+    <string name="notif_starting">Sự kiện đang bắt đầu: %1$s</string>
+    <string name="notif_minutes">Còn %1$d phút: %2$s</string>
+    <string name="notif_hours">Còn %1$d giờ: %2$s</string>
+    <string name="notif_tomorrow">Ngày mai: %1$s</string>
+    <string name="notif_days">Còn %1$d ngày: %2$s</string>
+
+    <!-- Recurrence -->
+    <string name="recurrence_none">Không lặp lại</string>
+    <string name="recurrence_daily">Hàng ngày</string>
+    <string name="recurrence_weekly">Hàng tuần</string>
+    <string name="recurrence_monthly">Hàng tháng</string>
+    <string name="recurrence_yearly">Hàng năm</string>
+
+    <!-- Day of week abbreviations (Mon-first) -->
+    <string name="dow_mon">T2</string>
+    <string name="dow_tue">T3</string>
+    <string name="dow_wed">T4</string>
+    <string name="dow_thu">T5</string>
+    <string name="dow_fri">T6</string>
+    <string name="dow_sat">T7</string>
+    <string name="dow_sun">CN</string>
+
+    <!-- DayView TimeSlot -->
+    <string name="slot_empty">Chưa có mục nào</string>
+    <string name="time_start">Bắt đầu</string>
+    <string name="time_end">Kết thúc</string>
+
+    <!-- AddEntrySheet -->
+    <string name="sheet_cancel">Hủy</string>
+    <string name="sheet_save">Lưu</string>
+    <string name="sheet_save_recurring">Lưu (%1$s)</string>
+    <string name="sheet_edit_title">Sửa %1$s</string>
+    <string name="sheet_discard_edit">Bỏ thay đổi?</string>
+    <string name="sheet_discard_new">Bỏ %1$s này?</string>
+    <string name="sheet_discard_confirm">Hủy bỏ</string>
+    <string name="sheet_keep_editing">Tiếp tục chỉnh sửa</string>
+    <string name="field_title_hint">Tiêu đề</string>
+    <string name="field_name_hint">Thêm tên</string>
+    <string name="field_allday">Cả ngày</string>
+    <string name="field_location_hint">Thêm địa điểm</string>
+    <string name="field_description_hint">Mô tả (không bắt buộc)</string>
+    <string name="field_repeat_until">Lặp đến</string>
+    <string name="field_occurrences">Tạo %1$d lần lặp</string>
+    <string name="field_deadline_add">Thêm thời hạn</string>
+    <string name="field_deadline_label">Đến hạn lúc</string>
+    <string name="field_color">Màu sắc</string>
+    <string name="field_attach_note">Đính kèm ghi chú</string>
+    <string name="field_pick_note">Chọn ghi chú</string>
+    <string name="field_close_notes">Đóng danh sách</string>
+    <string name="field_no_notes">Chưa có ghi chú nào</string>
+    <string name="field_birthday_include_year">Bao gồm năm</string>
+    <string name="field_birthday_yearly">Nhắc lại hàng năm</string>
+    <string name="field_custom_reminder">Tuỳ chỉnh…</string>
+    <string name="custom_reminder_title">Tuỳ chỉnh</string>
+    <string name="custom_reminder_done">Xong</string>
+
+    <!-- Recurrence options -->
+    <string name="rec_none">Không lặp lại</string>
+    <string name="rec_daily">Hàng ngày</string>
+    <string name="rec_weekly">Hàng tuần</string>
+    <string name="rec_monthly">Hàng tháng</string>
+    <string name="rec_yearly">Hàng năm</string>
+
+    <!-- Reminder display labels (AddEntrySheet dropdown) -->
+    <string name="reminder_none_short">Không có</string>
+    <string name="reminder_at_start">Lúc bắt đầu</string>
+    <string name="reminder_before_10min">Trước 10 phút</string>
+    <string name="reminder_before_30min">Trước 30 phút</string>
+    <string name="reminder_before_1h">Trước 1 giờ</string>
+    <string name="reminder_before_1day">Trước 1 ngày</string>
+
+    <!-- Reminder display label (EntryDetailSheet) -->
+    <string name="reminder_no_alert">Không có cảnh báo</string>
+    <string name="reminder_at_event">Lúc diễn ra sự kiện</string>
+    <string name="reminder_5min">5 phút trước</string>
+    <string name="reminder_10min">10 phút trước</string>
+    <string name="reminder_15min">15 phút trước</string>
+    <string name="reminder_30min">30 phút trước</string>
+    <string name="reminder_1h">1 giờ trước</string>
+    <string name="reminder_2h">2 giờ trước</string>
+    <string name="reminder_1day">1 ngày trước</string>
+    <string name="reminder_custom_min">%1$d phút trước</string>
+    <string name="reminder_custom_h">%1$d giờ trước</string>
+    <string name="reminder_custom_hm">%1$d giờ %2$d phút trước</string>
+    <string name="reminder_custom_days">%1$d ngày trước</string>
+    <string name="reminder_custom_before_min">Trước %1$d phút</string>
+    <string name="reminder_custom_before_h">Trước %1$d giờ</string>
+    <string name="reminder_custom_before_hm">Trước %1$d giờ %2$d phút</string>
+    <string name="reminder_custom_before_days">Trước %1$d ngày</string>
+    <string name="reminder_custom_before_dh">Trước %1$d ngày %2$d giờ</string>
+
+    <!-- EntryDetailSheet -->
+    <string name="detail_close">Đóng</string>
+    <string name="detail_edit">Sửa</string>
+    <string name="detail_allday">Cả ngày</string>
+    <string name="detail_rec_daily">Lặp hàng ngày</string>
+    <string name="detail_rec_weekly">Lặp hàng tuần</string>
+    <string name="detail_rec_monthly">Lặp hàng tháng</string>
+    <string name="detail_rec_yearly">Lặp hàng năm</string>
+
+    <!-- WeekView swim-lane labels -->
+    <string name="slot_anytime_short">Bất kỳ</string>
+    <string name="slot_morning_short">Sáng</string>
+    <string name="slot_afternoon_short">Chiều</string>
+    <string name="slot_evening_short">Tối</string>
+
+    <!-- AppNavigation Drawer -->
+    <string name="drawer_title">Lịch</string>
+
+    <!-- NoteGroup section headers -->
+    <string name="note_group_pinned">Đã ghim</string>
+    <string name="note_group_today">Hôm nay</string>
+    <string name="note_group_7days">7 ngày trước</string>
+    <string name="note_group_30days">30 ngày trước</string>
+    <string name="note_group_last_month">Tháng trước</string>
+    <string name="note_group_older">Cũ hơn</string>
+    <string name="notes_search_hint">Tìm kiếm…</string>
+    <string name="notes_new_note">Viết ghi chú mới</string>
+    <string name="notes_no_results">Không tìm thấy kết quả</string>
+    <string name="notes_empty_state">Chưa có ghi chú</string>
+    <string name="notes_view_list">Xem dưới dạng danh sách</string>
+    <string name="notes_view_grid">Xem dưới dạng bộ sưu tập</string>
+
+    <!-- Auth -->
+    <string name="auth_hero_title">Quản lý thời gian của bạn</string>
+    <string name="auth_hero_subtitle">Lịch · Nhật ký · Ghi chú — tất cả trong một nơi</string>
+    <string name="auth_continue_email">Tiếp tục với Email</string>
+    <string name="auth_continue_google">Tiếp tục với Google</string>
+    <string name="auth_login_title">Đăng nhập</string>
+    <string name="auth_login_welcome">Chào mừng trở lại!</string>
+    <string name="auth_no_account">Chưa có tài khoản? Đăng ký</string>
+    <string name="auth_register_title">Tạo tài khoản mới</string>
+    <string name="auth_password_min">Mật khẩu tối thiểu 6 ký tự</string>
+    <string name="auth_password_mismatch">Mật khẩu không khớp</string>
+    <string name="auth_has_account">Đã có tài khoản? Đăng nhập</string>
+    <string name="auth_back">Quay lại</string>
+
+    <!-- Settings (additional) -->
+    <string name="cal_holiday">Ngày lễ</string>
+
+    <!-- WeekView deadline chip prefix -->
+    <string name="deadline_prefix">Đến hạn: %1$s</string>
+
+    <!-- CustomReminderDialog units -->
+    <string name="unit_minute">phút</string>
+    <string name="unit_hour">giờ</string>
+    <string name="unit_day">ngày</string>
+    <string name="custom_reminder_notification">Thông báo</string>
+
+    <!-- SettingsScreen General -->
+    <string name="settings_general_title">Cài đặt chung</string>
+    <string name="settings_home_view_label">Màn hình chính</string>
+    <string name="settings_theme_label">Giao diện</string>
+    <string name="settings_lang_label">Ngôn ngữ</string>
+    <string name="settings_theme_system_short">Hệ thống</string>
+    <string name="settings_theme_light_short">Sáng</string>
+    <string name="settings_theme_dark_short">Tối</string>
+    <string name="settings_home_today_short">Hôm nay</string>
+    <string name="settings_home_week_short">Tuần</string>
+    <string name="settings_home_month_short">Tháng</string>
+
+    <!-- SettingsScreen Main & Calendar -->
+    <string name="settings_add_calendar">Thêm lịch</string>
+    <string name="settings_special_label">LỊCH ĐẶC BIỆT</string>
+    <string name="settings_national_holidays">Quốc lễ</string>
+    <string name="settings_not_showing">KHÔNG HIỂN THỊ</string>
+    <string name="settings_vn_all_holidays">Tất cả các ngày lễ</string>
+    <string name="settings_vn_all_desc">Hiển thị tất cả ngày lễ quốc gia và âm lịch</string>
+    <string name="settings_vn_national_only">Chỉ ngày lễ quốc gia</string>
+    <string name="settings_vn_none">Không hiển thị</string>
+    <string name="settings_pick_color">Chọn màu</string>
+    <string name="settings_edit_calendar">Chỉnh sửa lịch</string>
+    <string name="settings_add_holidays">Thêm ngày quốc lễ</string>
+    <string name="settings_default_notif_label">THÔNG BÁO MẶC ĐỊNH</string>
+    <string name="settings_delete_calendar">Xóa lịch</string>
+    <string name="settings_add_new_calendar">Thêm lịch mới</string>
+    <string name="settings_calendar_name">Tên lịch</string>
+    <string name="settings_color_custom">Màu tùy chỉnh</string>
+    <string name="settings_about_description">Ứng dụng quản lý lịch và công việc cá nhân. Giúp bạn theo dõi lịch học, công việc, bài kiểm tra, sinh nhật và các sự kiện quan trọng.</string>
+    <string name="settings_country_vietnam">Việt Nam</string>
+
+    <!-- AccountScreen -->
+    <string name="account_full_name">Họ và tên</string>
+    <string name="account_save_hint">Nhấn ✓ để lưu</string>
+    <string name="account_add_password">Thêm mật khẩu</string>
+    <string name="account_2fa_title">Xác thực hai yếu tố</string>
+    <string name="account_require_2fa">Yêu cầu 2FA</string>
+    <string name="account_delete">Xóa tài khoản</string>
+    <string name="account_delete_title">Xóa tài khoản?</string>
+    <string name="account_delete_message">Toàn bộ dữ liệu và tài khoản sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</string>
+
+    <!-- Accessibility / contentDescription -->
+    <string name="action_search">Tìm kiếm</string>
+    <string name="action_menu">Menu</string>
+    <string name="content_prev_week">Tuần trước</string>
+    <string name="content_next_week">Tuần sau</string>
+    <string name="content_prev_month">Tháng trước</string>
+    <string name="content_next_month">Tháng sau</string>
+    <string name="account_save_name">Lưu tên</string>
+    <string name="onboarding_name_hint">Tên của bạn</string>
+    <string name="cd_completed">Đã hoàn thành</string>
+    <string name="cd_not_completed">Chưa hoàn thành</string>
+    <string name="fab_add_entry">Thêm mục</string>
+    <string name="action_pin">Ghim</string>
+    <string name="action_unpin">Bỏ ghim</string>
+    <string name="notes_pin_note">Ghim ghi chú</string>
+    <string name="notes_unpin_note">Gỡ ghim ghi chú</string>
+    <string name="notes_editor_done">Xong</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_name_title">Bạn tên là gì?</string>
+    <string name="onboarding_name_subtitle">Để Scalendar cá nhân hóa cho bạn</string>
+    <string name="onboarding_role_title">Bạn là ai?</string>
+    <string name="onboarding_role_subtitle">Giúp chúng tôi điều chỉnh trải nghiệm phù hợp với bạn.</string>
+    <string name="onboarding_role_student">Sinh viên</string>
+    <string name="onboarding_role_working">Đã đi làm</string>
+    <string name="onboarding_role_other">Khác</string>
+    <string name="onboarding_source_title">Bạn biết Scalendar qua đâu?</string>
+    <string name="onboarding_source_subtitle">Giúp chúng tôi hiểu hơn về hành trình của bạn.</string>
+    <string name="onboarding_source_friends">Bạn bè giới thiệu</string>
+    <string name="onboarding_source_social">Mạng xã hội</string>
+    <string name="onboarding_source_search">Tình cờ tìm thấy</string>
+    <string name="onboarding_source_other">Khác</string>
+    <string name="onboarding_cal_title">Này %1$s, quản lý lịch dễ dàng hơn</string>
+    <string name="onboarding_cal_subtitle">Xem lịch theo ngày, tuần, tháng chỉ trong một chạm</string>
+    <string name="onboarding_journal_title">Ghi lại mọi khoảnh khắc</string>
+    <string name="onboarding_journal_subtitle">Nhật ký theo dõi những việc quan trọng trong cuộc sống bạn</string>
+    <string name="onboarding_notes_title">Ghi chú nhanh bất cứ lúc nào</string>
+    <string name="onboarding_notes_subtitle">Lưu lại ý tưởng, kế hoạch ngay khi chúng xuất hiện</string>
+    <string name="onboarding_name_fallback">bạn</string>
+
+    <!-- Color names for calendar color picker -->
+    <string name="color_red_orange">Màu cam đỏ</string>
+    <string name="color_orange">Màu cam</string>
+    <string name="color_yellow">Màu vàng</string>
+    <string name="color_light_green">Màu xanh lá nhạt</string>
+    <string name="color_green">Màu xanh lá</string>
+    <string name="color_teal">Màu xanh ngọc</string>
+    <string name="color_blue">Màu xanh lam</string>
+    <string name="color_sky_blue">Màu xanh dương</string>
+    <string name="color_purple">Màu tím</string>
+    <string name="color_red">Màu đỏ</string>
+    <string name="color_pink">Màu hồng</string>
+    <string name="color_brown">Màu nâu</string>
+    <string name="color_gray">Màu xám</string>
 </resources>

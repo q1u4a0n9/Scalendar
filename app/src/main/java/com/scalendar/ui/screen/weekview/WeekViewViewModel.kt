@@ -13,9 +13,10 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 data class WeekViewUiState(
-    val weekStart: LocalDate = LocalDate.now().startOfWeek(),
-    val grid: Map<LocalDate, Map<TimeOfDay, List<EntryEntity>>> = emptyMap(),
-    val isLoading: Boolean = false
+    val weekStart       : LocalDate = LocalDate.now().startOfWeek(),
+    val grid            : Map<LocalDate, Map<TimeOfDay, List<EntryEntity>>> = emptyMap(),
+    val deadlineEntries : Map<LocalDate, List<EntryEntity>> = emptyMap(),  // keyed by deadlineDate
+    val isLoading       : Boolean = false,
 )
 
 @HiltViewModel
@@ -30,11 +31,17 @@ class WeekViewViewModel @Inject constructor(
         .flatMapLatest { date ->
             val start = date.startOfWeek()
             val end   = start.plusDays(6)
-            repo.getByDateRange(start, end).map { entries ->
+            combine(
+                repo.getByDateRange(start, end),
+                repo.getByDeadlineDateRange(start, end),
+            ) { entries, deadlines ->
                 WeekViewUiState(
-                    weekStart = start,
-                    grid = entries.groupBy { it.date }
-                        .mapValues { (_, list) -> list.groupBy { it.timeOfDay } }
+                    weekStart       = start,
+                    grid            = entries.groupBy { it.date }
+                        .mapValues { (_, list) -> list.groupBy { it.timeOfDay } },
+                    deadlineEntries = deadlines
+                        .filter { it.deadlineDate != null }
+                        .groupBy { it.deadlineDate!! },
                 )
             }
         }

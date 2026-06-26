@@ -7,23 +7,31 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.scalendar.R
 import com.scalendar.ScalendarApp
+import com.scalendar.util.LocaleHelper
 
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val entryId    = intent.getLongExtra(EXTRA_ENTRY_ID, 0L)
-        val entryTitle = intent.getStringExtra(EXTRA_ENTRY_TITLE) ?: "Sự kiện"
-        val daysBefore = intent.getIntExtra(EXTRA_DAYS_BEFORE, 0)
+        // Wrap with app locale so strings follow the user's in-app language choice,
+        // not the device system locale.
+        val ctx = LocaleHelper.wrap(context, LocaleHelper.getLang(context))
 
-        val message = when (daysBefore) {
-            0    -> "Hôm nay: $entryTitle"
-            1    -> "Ngày mai: $entryTitle"
-            else -> "Còn $daysBefore ngày: $entryTitle"
+        val entryId       = intent.getLongExtra(EXTRA_ENTRY_ID, 0L)
+        val entryTitle    = intent.getStringExtra(EXTRA_ENTRY_TITLE)
+                            ?: ctx.getString(R.string.notif_default_title)
+        val minutesBefore = intent.getIntExtra(EXTRA_MINUTES_BEFORE, 0)
+
+        val message = when {
+            minutesBefore <= 0    -> ctx.getString(R.string.notif_starting, entryTitle)
+            minutesBefore < 60    -> ctx.getString(R.string.notif_minutes,  minutesBefore, entryTitle)
+            minutesBefore < 1440  -> ctx.getString(R.string.notif_hours,    minutesBefore / 60, entryTitle)
+            minutesBefore == 1440 -> ctx.getString(R.string.notif_tomorrow, entryTitle)
+            else                  -> ctx.getString(R.string.notif_days,     minutesBefore / 1440, entryTitle)
         }
 
         val notification = NotificationCompat.Builder(context, ScalendarApp.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Scalendar – Nhắc nhở")
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(ctx.getString(R.string.notif_title))
             .setContentText(message)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -31,14 +39,13 @@ class AlarmReceiver : BroadcastReceiver() {
             .build()
 
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        // Use a unique id per entry+offset so multiple reminders don't overwrite each other
-        val notifId = ((entryId * 100) + daysBefore).toInt()
+        val notifId = ((entryId and 0x7FFFF) * 100 + minutesBefore).toInt()
         nm.notify(notifId, notification)
     }
 
     companion object {
-        const val EXTRA_ENTRY_ID    = "entry_id"
-        const val EXTRA_ENTRY_TITLE = "entry_title"
-        const val EXTRA_DAYS_BEFORE = "days_before"
+        const val EXTRA_ENTRY_ID      = "entry_id"
+        const val EXTRA_ENTRY_TITLE   = "entry_title"
+        const val EXTRA_MINUTES_BEFORE = "minutes_before"
     }
 }

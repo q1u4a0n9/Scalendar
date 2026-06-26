@@ -10,7 +10,17 @@
       "Bash(gradlew assembleDebug)",
       "Bash(./gradlew assembleDebug)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "PowerShell(cmd /c \"dir D:\\\\ /b 2>&1\")",
+      "Bash(./gradlew installDebug)",
+      "Read(//mnt/d/Androi_project/**)",
+      "Bash(powershell.exe -File update_claude_md.ps1)",
+      "Bash(./gradlew assembleDebug --daemon)",
+      "Bash(cd /d D:\\\\Androi_project\\\\doanchuan2026)",
+      "Bash(gradlew.bat assembleDebug)",
+      "Bash(dir /s /b \"D:\\\\Androi_project\\\\doanchuan2026\")",
+      "Bash(findstr /i \"onboard\")",
+      "Bash(ls \"C:/Users/Admin/.claude/plans/\" 2>/dev/null || echo \"DIR_NOT_FOUND\")"
     ]
   }
 }

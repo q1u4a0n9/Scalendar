@@ -12,9 +12,10 @@ import java.time.YearMonth
 import javax.inject.Inject
 
 data class MonthViewUiState(
-    val yearMonth : YearMonth = YearMonth.now(),
-    val entries   : Map<LocalDate, List<EntryEntity>> = emptyMap(),
-    val isLoading : Boolean = false,
+    val yearMonth       : YearMonth = YearMonth.now(),
+    val entries         : Map<LocalDate, List<EntryEntity>> = emptyMap(),
+    val deadlineEntries : Map<LocalDate, List<EntryEntity>> = emptyMap(),  // keyed by deadlineDate
+    val isLoading       : Boolean = false,
 )
 
 @HiltViewModel
@@ -29,10 +30,16 @@ class MonthViewViewModel @Inject constructor(
         .flatMapLatest { ym ->
             val start = ym.atDay(1)
             val end   = ym.atEndOfMonth()
-            repo.getByDateRange(start, end).map { entries ->
+            combine(
+                repo.getByDateRange(start, end),
+                repo.getByDeadlineDateRange(start, end),
+            ) { entries, deadlines ->
                 MonthViewUiState(
-                    yearMonth = ym,
-                    entries   = entries.groupBy { it.date },
+                    yearMonth       = ym,
+                    entries         = entries.groupBy { it.date },
+                    deadlineEntries = deadlines
+                        .filter { it.deadlineDate != null }
+                        .groupBy { it.deadlineDate!! },
                 )
             }
         }
@@ -52,5 +59,9 @@ class MonthViewViewModel @Inject constructor(
 
     fun nextMonth() {
         _yearMonth.value = _yearMonth.value.plusMonths(1)
+    }
+
+    fun goToToday() {
+        _yearMonth.value = YearMonth.now()
     }
 }

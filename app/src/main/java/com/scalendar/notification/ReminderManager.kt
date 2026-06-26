@@ -4,9 +4,12 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import com.scalendar.data.database.entity.EntryEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.LocalTime
 import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,32 +21,41 @@ class ReminderManager @Inject constructor(
     private val alarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    /** Schedule all reminders defined in entry.reminderOffsets. */
+    /**
+     * Schedule all reminders defined in [entry.reminderOffsets].
+     * Values are now minute offsets before the event start time.
+     * e.g. "30" = fire 30 minutes before the event.
+     */
     fun schedule(entry: EntryEntity) {
         val offsets = parseOffsets(entry.reminderOffsets)
-        offsets.forEach { daysBefore ->
-            val triggerMillis = entry.date
-                .minusDays(daysBefore.toLong())
-                .atTime(9, 0)
+        // Event base time: use startTime if available, otherwise 09:00
+        val eventTime = entry.date.atTime(entry.startTime ?: LocalTime.of(9, 0))
+
+        offsets.forEach { minutesBefore ->
+            val triggerMillis = eventTime
+                .minusMinutes(minutesBefore.toLong())
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
                 .toEpochMilli()
 
             if (triggerMillis <= System.currentTimeMillis()) return@forEach  // already past
 
-            val pi = buildPendingIntent(entry.id, entry.title, daysBefore)
+            val pi = buildPendingIntent(entry.id, entry.title, minutesBefore)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 !alarmManager.canScheduleExactAlarms()
             ) {
-                // Fallback: approximate alarm (no special permission needed)
-                alarmManager.setAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, triggerMillis, pi
-                )
+                // Exact alarm not granted — open system settings so user can allow it.
+                // This only triggers once; after grant, all future schedules use exact alarms.
+                val settingsIntent = Intent(
+                    Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                    Uri.parse("package:${context.packageName}"),
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(settingsIntent)
+                // Still schedule as inexact in case user dismisses the dialog.
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerMillis, pi)
             } else {
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, triggerMillis, pi
-                )
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerMillis, pi)
             }
         }
     }
@@ -51,8 +63,8 @@ class ReminderManager @Inject constructor(
     /** Cancel all pending reminders for this entry. */
     fun cancel(entry: EntryEntity) {
         val offsets = parseOffsets(entry.reminderOffsets)
-        offsets.forEach { daysBefore ->
-            alarmManager.cancel(buildPendingIntent(entry.id, entry.title, daysBefore))
+        offsets.forEach { minutesBefore ->
+            alarmManager.cancel(buildPendingIntent(entry.id, entry.title, minutesBefore))
         }
     }
 
@@ -63,16 +75,17 @@ class ReminderManager @Inject constructor(
         else raw.split(",").mapNotNull { it.trim().toIntOrNull() }
 
     private fun buildPendingIntent(
-        entryId    : Long,
-        entryTitle : String,
-        daysBefore : Int,
+        entryId       : Long,
+        entryTitle    : String,
+        minutesBefore : Int,
     ): PendingIntent {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra(AlarmReceiver.EXTRA_ENTRY_ID,    entryId)
-            putExtra(AlarmReceiver.EXTRA_ENTRY_TITLE, entryTitle)
-            putExtra(AlarmReceiver.EXTRA_DAYS_BEFORE, daysBefore)
+            putExtra(AlarmReceiver.EXTRA_ENTRY_ID,       entryId)
+            putExtra(AlarmReceiver.EXTRA_ENTRY_TITLE,    entryTitle)
+            putExtra(AlarmReceiver.EXTRA_MINUTES_BEFORE, minutesBefore)
         }
-        val requestCode = ((entryId * 100) + daysBefore).toInt()
+        // Mask entryId to lower 19 bits to prevent Int overflow (supports ~500k unique entries)
+        val requestCode = ((entryId and 0x7FFFF) * 100 + minutesBefore).toInt()
         return PendingIntent.getBroadcast(
             context,
             requestCode,

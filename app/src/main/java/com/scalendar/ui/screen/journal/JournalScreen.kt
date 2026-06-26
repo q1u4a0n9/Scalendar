@@ -3,47 +3,52 @@ package com.scalendar.ui.screen.journal
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.outlined.Notes
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.scalendar.R
 import com.scalendar.data.database.entity.EntryEntity
+import com.scalendar.data.model.localizedName
 import com.scalendar.ui.theme.displayBgColor
+import com.scalendar.util.VietnamHolidays
+import androidx.compose.ui.platform.LocalConfiguration
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
-private val MONTH_TITLE_FMT = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.forLanguageTag("vi"))
-
-// ── Vietnamese short day names (T2…T7 / CN) ───────────────────────────
-private fun LocalDate.shortDayName(): String = when (dayOfWeek) {
-    DayOfWeek.MONDAY    -> "T2"
-    DayOfWeek.TUESDAY   -> "T3"
-    DayOfWeek.WEDNESDAY -> "T4"
-    DayOfWeek.THURSDAY  -> "T5"
-    DayOfWeek.FRIDAY    -> "T6"
-    DayOfWeek.SATURDAY  -> "T7"
-    DayOfWeek.SUNDAY    -> "CN"
-}
+// ── Locale-aware short day names ──────────────────────────────────────
+private fun LocalDate.shortDayName(locale: java.util.Locale): String =
+    if (locale.language == "vi") {
+        when (dayOfWeek) {
+            DayOfWeek.MONDAY    -> "T2"
+            DayOfWeek.TUESDAY   -> "T3"
+            DayOfWeek.WEDNESDAY -> "T4"
+            DayOfWeek.THURSDAY  -> "T5"
+            DayOfWeek.FRIDAY    -> "T6"
+            DayOfWeek.SATURDAY  -> "T7"
+            DayOfWeek.SUNDAY    -> "CN"
+            else                -> ""
+        }
+    } else {
+        DateTimeFormatter.ofPattern("EEE", locale).format(this).take(2)
+    }
 
 // ── Month accent gradients ────────────────────────────────────────────
 private val MONTH_GRADIENTS = listOf(
@@ -65,21 +70,71 @@ private fun monthGradient(ym: YearMonth): Brush {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JournalScreen(
-    onDayClick: (LocalDate) -> Unit = {},
-    viewModel : JournalViewModel = hiltViewModel(),
+    onDayClick     : (LocalDate) -> Unit = {},
+    holidayVnMode  : String              = "ALL",
+    holidayColor   : Color               = Color(0xFF26A69A),
+    viewModel      : JournalViewModel    = hiltViewModel(),
 ) {
     val uiState      by viewModel.uiState.collectAsState()
     val notesByDate  by viewModel.notesByDate.collectAsState()
     val today        = remember { LocalDate.now() }
+    val locale          = LocalConfiguration.current.locales[0]
+    val MONTH_TITLE_FMT = remember(locale) { DateTimeFormatter.ofPattern("MMMM yyyy", locale) }
 
-    // Pre-group entries by date so we don't recompute on every frame
-    val groupedData = remember(uiState.groups) {
-        uiState.groups.map { group ->
-            group to group.entries
-                .groupBy { it.date }
-                .entries
-                .sortedBy { it.key }   // already sorted, but be explicit
+    // ±6-month window (mirrors ViewModel's query range)
+    val windowStart = remember { today.minusMonths(6).withDayOfMonth(1) }
+    val windowEnd   = remember {
+        today.plusMonths(6).let { d -> d.withDayOfMonth(YearMonth.from(d).lengthOfMonth()) }
+    }
+
+    // All holiday dates in window, keyed by YearMonth
+    val holidayByMonth: Map<YearMonth, List<LocalDate>> = remember(holidayVnMode) {
+        buildMap<YearMonth, MutableList<LocalDate>> {
+            var d = windowStart
+            while (!d.isAfter(windowEnd)) {
+                if (VietnamHolidays.getName(d, holidayVnMode) != null) {
+                    getOrPut(YearMonth.from(d)) { mutableListOf() }.add(d)
+                }
+                d = d.plusDays(1)
+            }
         }
+    }
+
+    // Union of entry months + holiday months, sorted chronologically
+    val allYearMonths: List<YearMonth> = remember(uiState.groups, holidayByMonth) {
+        (uiState.groups.map { it.yearMonth }.toSet() + holidayByMonth.keys)
+            .toSortedSet().toList()
+    }
+
+    // Per-month: sorted (date → entries) pairs — includes holiday-only dates (empty entries)
+    val groupedData: List<Pair<YearMonth, List<Pair<LocalDate, List<EntryEntity>>>>> =
+        remember(uiState.groups, holidayByMonth) {
+            allYearMonths.map { ym ->
+                val entryByDate = uiState.groups.find { it.yearMonth == ym }
+                    ?.entries?.groupBy { it.date } ?: emptyMap()
+                val allDates = (entryByDate.keys + (holidayByMonth[ym] ?: emptyList()))
+                    .toSortedSet()
+                ym to allDates.map { date -> date to (entryByDate[date] ?: emptyList()) }
+            }
+        }
+
+    // ── Auto-scroll to current month on first load ────────────────────
+    val listState = rememberLazyListState()
+    val todayYm   = remember { YearMonth.from(today) }
+    var didScroll by remember { mutableStateOf(false) }
+
+    // Key on both groupedData AND isLoading so this re-fires when loading finishes.
+    // Guard on isLoading so we never scroll before LazyColumn is actually rendered.
+    LaunchedEffect(groupedData, uiState.isLoading) {
+        if (didScroll || groupedData.isEmpty() || uiState.isLoading) return@LaunchedEffect
+        didScroll = true
+        // Each month occupies: 1 (header) + byDate.size (date rows) + 1 (gap spacer) items
+        var idx = 0
+        for ((ym, byDate) in groupedData) {
+            if (ym >= todayYm) break
+            idx += 1 + byDate.size + 1
+        }
+        listState.scrollToItem(idx)
     }
 
     Scaffold(
@@ -87,7 +142,7 @@ fun JournalScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text  = "Nhật ký",
+                        text  = stringResource(R.string.journal_title),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
@@ -101,19 +156,22 @@ fun JournalScreen(
     ) { innerPadding ->
 
         if (uiState.isLoading) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier         = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center,
+            ) {
                 CircularProgressIndicator()
             }
             return@Scaffold
         }
 
-        if (uiState.groups.isEmpty()) {
+        if (groupedData.isEmpty()) {
             Box(
                 modifier         = Modifier.fillMaxSize().padding(innerPadding),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text  = "Chưa có sự kiện nào",
+                    text  = stringResource(R.string.journal_empty),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -122,6 +180,7 @@ fun JournalScreen(
         }
 
         LazyColumn(
+            state               = listState,
             contentPadding      = PaddingValues(
                 start  = 16.dp, end = 16.dp,
                 top    = innerPadding.calculateTopPadding() + 8.dp,
@@ -129,29 +188,31 @@ fun JournalScreen(
             ),
             verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
-            groupedData.forEach { (group, byDate) ->
+            groupedData.forEach { (ym, byDate) ->
 
                 // Month header card
-                item(key = "hdr_${group.yearMonth}") {
-                    MonthGroupHeader(group.yearMonth)
+                item(key = "hdr_$ym") {
+                    MonthGroupHeader(ym, MONTH_TITLE_FMT)
                     Spacer(Modifier.height(16.dp))
                 }
 
-                // One DateGroup per unique date
+                // One DateGroup per unique date (entries may be empty for holiday-only rows)
                 byDate.forEach { (date, dateEntries) ->
-                    item(key = "${group.yearMonth}_$date") {
+                    item(key = "${ym}_$date") {
                         DateGroup(
-                            date       = date,
-                            entries    = dateEntries,
-                            notes      = notesByDate[date] ?: emptyList(),
-                            isToday    = date == today,
-                            onToggle   = viewModel::toggleComplete,
-                            onDayClick = onDayClick,
+                            date         = date,
+                            entries      = dateEntries,
+                            notes        = notesByDate[date] ?: emptyList(),
+                            isToday      = date == today,
+                            holidayName  = VietnamHolidays.getName(date, holidayVnMode),
+                            holidayColor = holidayColor,
+                            onDayClick   = onDayClick,
+                            locale       = locale,
                         )
                     }
                 }
 
-                item(key = "gap_${group.yearMonth}") {
+                item(key = "gap_$ym") {
                     Spacer(Modifier.height(24.dp))
                 }
             }
@@ -161,7 +222,7 @@ fun JournalScreen(
 
 // ── Month header card ─────────────────────────────────────────────────
 @Composable
-private fun MonthGroupHeader(ym: YearMonth) {
+private fun MonthGroupHeader(ym: YearMonth, monthTitleFmt: DateTimeFormatter) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,7 +231,7 @@ private fun MonthGroupHeader(ym: YearMonth) {
             .padding(horizontal = 20.dp, vertical = 14.dp),
     ) {
         Text(
-            text  = ym.atDay(1).format(MONTH_TITLE_FMT).replaceFirstChar { it.uppercase() },
+            text  = ym.atDay(1).format(monthTitleFmt).replaceFirstChar { it.uppercase() },
             style = MaterialTheme.typography.titleLarge,
             color = Color.White,
         )
@@ -182,12 +243,14 @@ private fun MonthGroupHeader(ym: YearMonth) {
 //         today: number in primary + small primary dot below
 @Composable
 private fun DateGroup(
-    date      : LocalDate,
-    entries   : List<EntryEntity>,
-    notes     : List<com.scalendar.data.database.entity.NoteEntity>,  // same-day notes
-    isToday   : Boolean,
-    onToggle  : (EntryEntity) -> Unit,
-    onDayClick: (LocalDate) -> Unit,
+    date         : LocalDate,
+    entries      : List<EntryEntity>,
+    notes        : List<com.scalendar.data.database.entity.NoteEntity>,
+    isToday      : Boolean,
+    holidayName  : String?,
+    holidayColor : Color,
+    onDayClick   : (LocalDate) -> Unit,
+    locale       : java.util.Locale = java.util.Locale("vi"),
 ) {
     Row(
         modifier          = Modifier
@@ -206,7 +269,7 @@ private fun DateGroup(
         ) {
             // Short day name: "T2" … "T7" / "CN"
             Text(
-                text  = date.shortDayName(),
+                text  = date.shortDayName(locale),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight    = FontWeight.SemiBold,
                     letterSpacing = 0.6.sp,
@@ -234,24 +297,37 @@ private fun DateGroup(
                         .background(MaterialTheme.colorScheme.primary),
                 )
             }
+            // Holiday label (tiny, wraps within the 52dp column)
+            if (holidayName != null) {
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text      = holidayName,
+                    style     = MaterialTheme.typography.labelSmall.copy(fontSize = 8.sp),
+                    color     = holidayColor,
+                    maxLines  = 2,
+                    overflow  = TextOverflow.Ellipsis,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                )
+            }
         }
 
         Spacer(Modifier.width(14.dp))
 
-        // ── Entries + same-day notes ──────────────────────────────────
+        // ── Entries + same-day notes (+ holiday chip if nothing else) ───
         Column(
             modifier            = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             entries.forEach { entry ->
-                JournalEntryCard(
-                    entry    = entry,
-                    onToggle = { onToggle(entry) },
-                )
+                JournalEntryCard(entry = entry)
             }
             // Notes written on this date auto-show as snippets below entries
             notes.forEach { note ->
                 NoteSnippet(note = note)
+            }
+            // Holiday-only row: show a prominent chip when no entries/notes
+            if (entries.isEmpty() && notes.isEmpty() && holidayName != null) {
+                HolidayChip(name = holidayName, color = holidayColor)
             }
         }
     }
@@ -259,17 +335,11 @@ private fun DateGroup(
 
 // ── Entry card — no inline date (handled by DateGroup) ────────────────
 @Composable
-private fun JournalEntryCard(
-    entry   : EntryEntity,
-    onToggle: () -> Unit,
-) {
-    val alpha       = if (entry.isCompleted) 0.55f else 1f
+private fun JournalEntryCard(entry: EntryEntity) {
     val accentColor = entry.displayBgColor()
 
     Row(
-        modifier          = Modifier
-            .fillMaxWidth()
-            .alpha(alpha),
+        modifier          = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Left accent stripe
@@ -287,9 +357,7 @@ private fun JournalEntryCard(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text     = entry.title,
-                style    = MaterialTheme.typography.bodyLarge.let { s ->
-                    if (entry.isCompleted) s.copy(textDecoration = TextDecoration.LineThrough) else s
-                },
+                style    = MaterialTheme.typography.bodyLarge,
                 color    = MaterialTheme.colorScheme.onBackground,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -297,7 +365,7 @@ private fun JournalEntryCard(
             Spacer(Modifier.height(4.dp))
             // Category badge
             Text(
-                text     = entry.category.displayName(),
+                text     = entry.category.localizedName(),
                 style    = MaterialTheme.typography.labelSmall,
                 color    = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
@@ -305,26 +373,13 @@ private fun JournalEntryCard(
                     .background(accentColor.copy(alpha = 0.25f))
                     .padding(horizontal = 6.dp, vertical = 2.dp),
             )
-        }
-
-        Spacer(Modifier.width(8.dp))
-
-        // Toggle complete
-        IconButton(onClick = onToggle, modifier = Modifier.size(32.dp)) {
-            if (entry.isCompleted) {
-                Icon(
-                    Icons.Filled.CheckCircle,
-                    contentDescription = "Hoàn thành",
-                    tint     = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp),
-                )
-            } else {
-                Icon(
-                    Icons.Outlined.RadioButtonUnchecked,
-                    contentDescription = "Đánh dấu hoàn thành",
-                    tint     = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
-                )
+            if (entry.location.isNotBlank()) {
+                Spacer(Modifier.height(3.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Outlined.LocationOn, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(11.dp))
+                    Spacer(Modifier.width(3.dp))
+                    Text(text = entry.location, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
             }
         }
     }
@@ -382,5 +437,29 @@ private fun NoteSnippet(note: com.scalendar.data.database.entity.NoteEntity) {
                 )
             }
         }
+    }
+}
+
+// ── Holiday chip — shown when a date has no entries/notes ─────────────
+@Composable
+private fun HolidayChip(name: String, color: Color) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(color.copy(alpha = 0.15f))
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text  = "🎉",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text  = name,
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+            color = color,
+        )
     }
 }

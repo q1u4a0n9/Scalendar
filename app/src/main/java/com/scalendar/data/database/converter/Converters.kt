@@ -10,6 +10,9 @@ class Converters {
     @TypeConverter fun fromLocalDate(v: LocalDate): String = v.toString()
     @TypeConverter fun toLocalDate(v: String): LocalDate = LocalDate.parse(v)
 
+    @TypeConverter fun fromLocalDateNullable(v: LocalDate?): String? = v?.toString()
+    @TypeConverter fun toLocalDateNullable(v: String?): LocalDate? = v?.let { LocalDate.parse(it) }
+
     @TypeConverter fun fromLocalTime(v: LocalTime?): String? = v?.toString()
     @TypeConverter fun toLocalTime(v: String?): LocalTime? = v?.let { LocalTime.parse(it) }
 
